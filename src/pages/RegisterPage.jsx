@@ -13,7 +13,7 @@ const RegisterPage = () => {
     const [error, setError] = useState(null);
     const URL = import.meta.env.VITE_SERVER_URL;
     const navigate = useNavigate();
-    const { user, users, getUserFullName } = useContext(AppContext);
+    const { user, users, getUserFullName, setUser } = useContext(AppContext);
 
     useEffect(() => {
         if (user) {
@@ -36,9 +36,12 @@ const RegisterPage = () => {
                     patronymic,
                     login,
                     password,
-                    head
+                    head,
+                    isAdmin: false
                 })
             });
+
+            const data = await res.json();
 
             if (!res.ok) {
                 setIsLoading(false);
@@ -46,8 +49,19 @@ const RegisterPage = () => {
                 return;
             }
 
+            if (data) {
+                localStorage.setItem('token', data.token);
+                setUser({
+                    id: data.id,
+                    login: data.login,
+                    name: data.name,
+                    lastName: data.lastName,
+                    patronymic: data.patronymic,
+                    isAdmin: data.isAdmin
+                });
+            }
             setIsLoading(false);
-            navigate('/login');
+            navigate('/');
         } catch (error) {
             setIsLoading(false);
             setError(error);
@@ -58,7 +72,7 @@ const RegisterPage = () => {
     return (
         <div className="login">
             <form className="form form-login" onSubmit={handleSubmit}>
-                <h1 className="form-title">Регистрация в ToDo</h1>
+                <h1 className="form-title">Регистрация</h1>
                 <input type="text" name="name" id="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Имя" required />
                 <input type="text" name="lastName" id="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)} placeholder="Фамилия" required />
                 <input type="text" name="patronimic" id="patronumic" value={patronymic} onChange={(e) => setPatronymic(e.target.value)} placeholder="Отчество" required />

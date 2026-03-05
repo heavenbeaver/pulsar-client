@@ -2,6 +2,8 @@ import CalendarIcon from '../icons/CalendarIcon';
 import ClockIcon from '../icons/ClockIcon';
 import { useContext } from 'react';
 import { AppContext } from '../App';
+import PriorityBadge from './PriorityBadge';
+import StatusBadge from './StatusBadge';
 
 const TodoCard = ({ cardKey, todo, openModal }) => {
     const { title, desc, expireDate, createDate, updateDate, priority, status, creator, responsible } = todo;
@@ -20,11 +22,11 @@ const TodoCard = ({ cardKey, todo, openModal }) => {
     return (
         <li className="todo-card" key={cardKey} onClick={() => {openModal('edit'); setSelectedTodoId(todo.id)}}>
             <div className="todo-card-header">
-                <h3 className={`todo-title ${status == 'Выполнена' && 'title-green'} ${expireDateObj < currentDateObj && status !== 'Выполнена' && 'title-red'}`}>{title}</h3>
                 <div className="todo-badges">
-                    <span className="badge priority-high">{priority}</span>
-                    <span className="badge status-new">{status}</span>
+                    <PriorityBadge priority={priority} />
+                    <StatusBadge status={status} />
                 </div>
+                <h3 className={`todo-title ${status == 'Выполнена' && 'title-green'} ${expireDateObj < currentDateObj && status !== 'Выполнена' && 'title-red'}`}>{title}</h3>
             </div>
 
             <p className="todo-description">{desc}</p>
@@ -48,12 +50,12 @@ const TodoCard = ({ cardKey, todo, openModal }) => {
 
             <div className="todo-footer">
                 <div className="user-info">
-                    <span className="user-label">Создатель:</span>
-                    <span className="user-name">{getUserFullName(creator)}</span>
+                    <span className="info__user-label">Создатель:</span>
+                    <span className="info__user-name">{getUserFullName(creator)}</span>
                 </div>
                 <div className="user-info">
-                    <span className="user-label">Ответственный:</span>
-                    <span className="user-name">{getUserFullName(responsible)}</span>
+                    <span className="info__user-label">Ответственный:</span>
+                    <span className="info__user-name">{getUserFullName(responsible)}</span>
                 </div>
             </div>
         </li>

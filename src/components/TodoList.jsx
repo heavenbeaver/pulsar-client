@@ -1,9 +1,29 @@
 import TodoCard from "./TodoCard";
 import { AppContext } from "../App";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useMemo } from "react";
+
 
 const TodoList = ({ openModal }) => {
-    const { todos, setTodos, user, groupTodoList, getUserFullName } = useContext(AppContext);
+    const { todos, setTodos, user, groupTodoList, getUserFullName, subordinates, setSubordinates } = useContext(AppContext);
+
+    useEffect(() => {
+        const fetchSubordinates = async () => {
+            try {
+                const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/users?managerId=${user.id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+                const data = await res.json();
+                console.log(data);
+                setSubordinates(data); // Массив подчиненных
+            } catch (err) {
+                console.error('Ошибка загрузки подчиненных:', err);
+            }
+        };
+
+        if (user.id) fetchSubordinates();
+    }, [])
 
     const parseDate = (dateStr) => {
         if (!dateStr) return null;
@@ -30,12 +50,42 @@ const TodoList = ({ openModal }) => {
     }
 
     const groupByResponsible = (todos) => {
-        return todos.reduce((acc, todo) => {
+        const groups = {};
+
+        // Функция для добавления человека в группы
+        const addPerson = (id) => {
+            const key = getUserFullName(id);
+            if (!groups[key]) {
+                groups[key] = [];
+            }
+        };
+
+        // Добавляем всех подчиненных (если есть)
+        if (subordinates) {
+            subordinates.forEach(sub => addPerson(sub.id));
+        }
+
+        // Добавляем руководителя
+        addPerson(user.id);
+
+        // Добавляем всех ответственных из задач
+        todos.forEach(todo => addPerson(todo.responsible));
+
+        // Распределяем задачи
+        todos.forEach(todo => {
             const key = getUserFullName(todo.responsible);
-            if (!acc[key]) acc[key] = [];
-            acc[key].push(todo);
-            return acc;
-        }, {});
+            groups[key].push(todo);
+        });
+
+        // Сортируем группы по алфавиту и возвращаем
+        const sortedGroups = {};
+        Object.keys(groups)
+            .sort((a, b) => a.localeCompare(b, 'ru'))
+            .forEach(key => {
+                sortedGroups[key] = groups[key];
+            });
+
+        return sortedGroups;
     };
 
     const groupByExpireDate = (todos) => {
@@ -77,21 +127,28 @@ const TodoList = ({ openModal }) => {
             case 'По дате завершения':
                 return groupByExpireDate(sorted);
             default:
-                return { Все: sorted };
+                return { 'Все задачи': sorted };
         }
     }
     
-    const grouped = todos ? groupTodos(todos) : null;
+    const grouped = useMemo(() => {
+        return todos ? groupTodos(todos) : null;
+    }, [todos]);
 
     useEffect(() => {
+        const abortController = new AbortController();
+
         const fetchTodos = async () => {
+            if (!user.id) return;
+
             try {
-                const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/todos`, {
+                const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/todos?userId=${user.id}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${localStorage.getItem('token')}`
-                    }
+                    },
+                    signal: abortController.signal
                 });
                 if (!res.ok) {
                     console.error('Ошибка при получении задач');
@@ -103,30 +160,33 @@ const TodoList = ({ openModal }) => {
                 console.error(err)
             }
         }
+
         fetchTodos();
-    }, [setTodos, grouped]);
+
+        return () => abortController.abort();
+
+    }, [setTodos, todos, user?.id ]);
 
     return (
         <div className="todo-wrapper">
             {!grouped ? (
-                <p>Загрузка...</p>
+                <p className="empty-message">Загрузка...</p>
             ) : Object.keys(grouped).length === 0 ? (
                 <p className="empty-message">Список задач пуст</p>
             ) : (
                 Object.entries(grouped).map(([groupName, groupItems]) => {
-                    // Фильтруем задачи для текущего пользователя
-                    const filteredItems = groupItems.filter(todo =>
-                        todo.creator === user.id || todo.responsible === user.id
-                    );
-
-                    // Не рендерим группу, если после фильтрации нет задач
-                    if (filteredItems.length === 0) return null;
 
                     return (
                         <div key={groupName} className="todo-group">
-                            <h3>{groupName}</h3>
+
+                            <div className="group-title">
+                                <div className="group-name">{groupName}</div>
+                                <div className="group-line"></div>
+                                <span>{groupItems.length}</span>
+                            </div>
+
                             <ul className="todo-list">
-                                {filteredItems.map(todo => (
+                                {groupItems.map(todo => (
                                     <TodoCard
                                         key={todo.id}
                                         todo={todo}

@@ -13,6 +13,7 @@ export const AppContext = createContext();
 function App() {
   const [user, setUser] = useState(null);
   const [users, setUsers] = useState(null);
+  const [subordinates, setSubordinates] = useState(null);
   const [todos, setTodos] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
   const [editMode, setEditMode] = useState(null);
@@ -41,8 +42,6 @@ function App() {
       setUser(data); // сохраняем пользователя в контексте
     } catch (err) {
       console.error('Fetch /auth/me error:', err);
-      // localStorage.removeItem('token');
-      // setUser(null);
     } finally {
       setAuthLoading(false);
     }
@@ -96,7 +95,7 @@ function App() {
   }
 
   return (
-    <AppContext.Provider value={{ user, setUser, todos, setTodos, users, setUsers, getUserFullName, editMode, setEditMode, selectedTodoId, setSelectedTodoId, todoData, setTodoData, groupTodoList, setGroupTodoList }}>
+    <AppContext.Provider value={{ user, setUser, todos, setTodos, users, setUsers, getUserFullName, editMode, setEditMode, selectedTodoId, setSelectedTodoId, todoData, setTodoData, groupTodoList, setGroupTodoList, subordinates, setSubordinates }}>
       <Router>
         <Routes>
           <Route path="/" element={

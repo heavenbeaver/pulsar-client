@@ -10,6 +10,7 @@ const LoginPage = () => {
     const URL = import.meta.env.VITE_SERVER_URL;
     const navigate = useNavigate();
     const { user, setUser } = useContext(AppContext);
+    const [isHidePass, setIsHidePass] = useState(true);
 
     useEffect(() => {
         if (user) {
@@ -48,7 +49,8 @@ const LoginPage = () => {
                 login: data.login,
                 name: data.name,
                 lastName: data.lastName,
-                patronymic: data.patronymic
+                patronymic: data.patronymic,
+                isAdmin: data.isAdmin
             })
             setIsLoading(false);
             navigate('/');
@@ -63,12 +65,21 @@ const LoginPage = () => {
         }
     }
 
+    const changePassVisibility = () => {
+        setIsHidePass(!isHidePass);
+    }
+
     return (
         <div className="login">
             <form className="form form-login" onSubmit={handleSubmit}>
-                <h1 className="form-title">Вход в ToDo</h1>
+                <h1 className="form-title">Вход</h1>
                 <input type="text" name="login" id="login" value={login} onChange={(e) => setLogin(e.target.value)} placeholder="Логин" required />
-                <input type="password" name="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Пароль" autoComplete="password" required />
+                <div className="password-container">
+                    <input type={isHidePass ? 'password' : 'text'} name="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Пароль" autoComplete="password" required />
+                    <div className="show-pass-btn" onClick={changePassVisibility}>
+                        <img width={25} src={isHidePass ? 'show.png' : 'hide.png'} alt="Иконка показать/скрыть пароль" title={isHidePass ? 'Показать пароль' : 'Скрыть пароль'} />
+                    </div>
+                </div>
                 <button className="btn btn-primary" disabled={isLoading}>{isLoading ? 'Отправка...' : 'Войти'}</button>
                 {error && <p className="error-message">Ошибка: {error}</p>}
             </form>

@@ -89,6 +89,7 @@ const Modal = forwardRef(({ closeModal }, ref) => {
 
     useEffect(() => {
         if (!selectedTodoId) return;
+
         const fetchTodoData = async () => {
             try {
                 const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/todos/${selectedTodoId}`, {
@@ -191,7 +192,7 @@ const Modal = forwardRef(({ closeModal }, ref) => {
             {editMode === 'create' ?
                 <form className="todo-form" onSubmit={handleSubmit}>
                     <h2 className="form-title">Создание задачи</h2>
-                    <input type="text" name="title" id="title" value={title} placeholder="Название" onChange={(e) => setTitle(e.target.value)} />
+                    <input type="text" name="title" id="title" value={title} placeholder="Название" onChange={(e) => setTitle(e.target.value)} required/>
                     <textarea placeholder="Описание задачи" name="desc" id="desc" value={desc} onChange={(e) => setDesc(e.target.value)} required></textarea>
                     <Flatpickr
                         value={expireDate}
@@ -210,7 +211,8 @@ const Modal = forwardRef(({ closeModal }, ref) => {
                     <label htmlFor="responsible">Ответственный за выполнение:</label>
                     <select name="responsible" id="responsible" value={responsible} onChange={(e) => setResponsible(e.target.value)}>
                         <option value={user.id}>{getUserFullName(user.id)}</option>
-                        {users && users.filter(item => item.head == user.id).map(user => {
+                        
+                        {users && users.filter(item => item.head === user.id).map(user => {
                             return <option key={user.id} value={user.id}>{getUserFullName(user.id)}</option>
                         })}
                     </select>
@@ -238,7 +240,7 @@ const Modal = forwardRef(({ closeModal }, ref) => {
                     </select>
                     <label htmlFor="responsible">Ответственный за выполнение:</label>
                     <select disabled={!canEdit} name="responsible" id="responsible" value={responsible} onChange={(e) => setResponsible(e.target.value)}>
-                        <option value={todoData && todoData.responsible}>{getUserFullName(todoData && todoData.responsible)}</option>
+                        <option value={user.id}>{getUserFullName(user.id)}</option>
                         {users && users.filter(item => item.head == user.id).map(user => {
                             return <option key={user.id} value={user.id}>{getUserFullName(user.id)}</option>
                         })}

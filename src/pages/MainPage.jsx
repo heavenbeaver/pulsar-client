@@ -64,8 +64,8 @@ const MainPage = () => {
 
     return (
         <>
+            <Header />
             <div className="container">
-                <Header />
                 <TodoSort />
                 <TodoList openModal={openModal} closeModal={closeModal} />
             </div>
