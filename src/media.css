@@ -1,0 +1,38 @@
+@media (max-width: 768px) {
+    .todo-list {
+        columns: 1;
+        /* одна колонка вместо двух */
+    }
+
+    .toolbar {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .toolbar * {
+        width: 100%;
+    }
+
+    .todo-counter {
+        flex-direction: column;
+    }
+
+    .user-pill {
+        padding: 6px;
+    }
+
+    .user-name {
+        display: none;
+    }
+
+    .form-login {
+        width: 350px;
+    }
+
+    .modal {
+        width: 100%;
+        min-height: 100dvh;
+        border-radius: 0;
+        overflow-y: scroll;
+    }
+}

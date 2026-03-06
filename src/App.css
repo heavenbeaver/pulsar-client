@@ -36,7 +36,7 @@
 body {
     background: var(--bg);
     color: var(--text-primary);
-    min-height: 100vh;
+    min-height: 100dvh;
     background-image:
         radial-gradient(ellipse 80% 50% at 20% -10%, rgba(79, 124, 255, 0.08) 0%, transparent 60%),
         radial-gradient(ellipse 60% 40% at 80% 110%, rgba(255, 92, 122, 0.06) 0%, transparent 60%);
@@ -597,6 +597,7 @@ button {
     display: flex;
     justify-content: center;
     align-items: center;
+    border: 1px solid var(--border);
 }
 
 .btn-up {
@@ -611,6 +612,7 @@ button {
     display: flex;
     justify-content: center;
     align-items: center;
+    border: 1px solid var(--border);
 }
 
 .btn-up:hover {
@@ -645,12 +647,13 @@ button {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 800px;
-    height: auto;
+    max-height: 90dvh;
     background-color: var(--bg);
     border-radius: 10px;
     z-index: 3;
     box-shadow: var(--box-shadow);
     display: none;
+    overflow-y: scroll;
 }
 
 body.modal-open {
@@ -674,7 +677,7 @@ body.modal-open {
     border-radius: 10px;
     padding: 10px;
     min-height: 200px;
-    min-width: 100%;
+    width: 100% !important;
 }
 
 .todo-form textarea:focus {
@@ -756,7 +759,6 @@ body.modal-open {
     }
 }
 
-
 /* SKELETON */
 .skeleton {
     background: linear-gradient(90deg, #1e2130 25%, #2a2f45 50%, #1e2130 75%);
@@ -774,3 +776,28 @@ body.modal-open {
         background-position: -200% 0;
     }
 }
+
+/* СКРОЛЛБАР */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #2a2f45;
+    border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #4f7cff;
+}
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #2a2f45 transparent;
+}
+
+/*  */

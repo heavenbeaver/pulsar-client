@@ -85,7 +85,7 @@ const RegisterPage = () => {
                         return <option key={user.id} value={user.id}>{getUserFullName(user.id)}</option>
                     })}
                 </select>
-                <button className="btn btn-primary">{isLoading ? 'Отправка...' : 'Зарегистрироваться'}</button>
+                <button className="btn btn-primary">{isLoading ? 'Отправка данных' : 'Зарегистрироваться'}</button>
                 {error && <p className="error-message">Ошибка: {error}</p>}
             </form>
             <Link to={'/login'}>Войти</Link>

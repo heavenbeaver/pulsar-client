@@ -18,6 +18,8 @@ const Modal = forwardRef(({ closeModal }, ref) => {
     const [deleting, setDeleting] = useState(false);
     const [loadingTodo, setLoadingTodo] = useState(false);
 
+    const isMobile = /iPhone|iPad|Android/i.test(navigator.userAgent);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
@@ -199,14 +201,33 @@ const Modal = forwardRef(({ closeModal }, ref) => {
                     <h2 className="form-title">Создание задачи</h2>
                     <input type="text" name="title" id="title" value={title} placeholder="Название" onChange={(e) => setTitle(e.target.value)} required />
                     <textarea placeholder="Описание задачи" name="desc" id="desc" value={desc} onChange={(e) => setDesc(e.target.value)} required></textarea>
-                    <Flatpickr
-                        value={expireDate}
-                        options={pickerOptions}
-                        placeholder="Срок выполнения до:"
-                        onChange={(selectedDates, dateStr) => {
-                            setExpireDate(dateStr);
-                        }}
-                    />
+                    {isMobile ? (
+                        <>
+                            <label htmlFor="date">Срок выполнения до:</label>
+                            <input
+                                type="date"
+                                id="date"
+                                name="date"
+                                value={expireDate ? expireDate.split('.').reverse().join('-') : ''} // dd.mm.yyyy → yyyy-mm-dd
+                                onChange={(e) => {
+                                    const [y, m, d] = e.target.value.split('-');
+                                    setExpireDate(`${d}.${m}.${y}`); // обратно в dd.mm.yyyy
+                                }}
+                            />
+                        </>
+                    ) : (
+                        <>
+                            <label htmlFor="date">Срок выполнения до:</label>
+                            <Flatpickr
+                                id="date"
+                                name="date"
+                                value={expireDate}
+                                options={pickerOptions}
+                                placeholder="Выбрать дату..."
+                                onChange={(selectedDates, dateStr) => setExpireDate(dateStr)}
+                            />
+                        </>
+                    )}
                     <label htmlFor="priority">Приоритет:</label>
                     <select name="priority" id="priority" value={priority} onChange={(e) => setPriority(e.target.value)}>
                         <option value="Высокий">Высокий</option>
@@ -221,7 +242,7 @@ const Modal = forwardRef(({ closeModal }, ref) => {
                             return <option key={user.id} value={user.id}>{getUserFullName(user.id)}</option>
                         })}
                     </select>
-                    <button className="btn btn-primary" disabled={loading}>{loading ? 'Отправка...' : 'Создать задачу'}</button>
+                    <button className="btn btn-primary" disabled={loading}>{loading ? 'Создание' : 'Создать задачу'}</button>
                 </form>
             ) : loadingTodo ? (
                 <FormEditSkeleton />
@@ -230,15 +251,33 @@ const Modal = forwardRef(({ closeModal }, ref) => {
                     <h2 className="form-title">Редактирование задачи</h2>
                     <input disabled={!canEdit} type="text" name="title" id="title" value={title} placeholder="Название" onChange={(e) => setTitle(e.target.value)} />
                     <textarea disabled={!canEdit} placeholder="Описание задачи" name="desc" id="desc" value={desc} onChange={(e) => setDesc(e.target.value)} required></textarea>
-                    <Flatpickr
-                        value={expireDate}
-                        disabled={!canEdit}
-                        options={pickerOptions}
-                        placeholder="Срок выполнения до:"
-                        onChange={(selectedDates, dateStr) => {
-                            setExpireDate(dateStr);
-                        }}
-                    />
+                    {isMobile ? (
+                        <>
+                            <label htmlFor="date">Срок выполнения до:</label>
+                            <input
+                                type="date"
+                                id="date"
+                                name="date"
+                                value={expireDate ? expireDate.split('.').reverse().join('-') : ''} // dd.mm.yyyy → yyyy-mm-dd
+                                onChange={(e) => {
+                                    const [y, m, d] = e.target.value.split('-');
+                                    setExpireDate(`${d}.${m}.${y}`); // обратно в dd.mm.yyyy
+                                }}
+                            />
+                        </>
+                    ) : (
+                        <>
+                            <label htmlFor="date">Срок выполнения до:</label>
+                            <Flatpickr
+                                id="date"
+                                name="date"
+                                value={expireDate}
+                                options={pickerOptions}
+                                placeholder="Выбрать дату..."
+                                onChange={(selectedDates, dateStr) => setExpireDate(dateStr)}
+                            />
+                        </>
+                    )}
                     <label htmlFor="priority">Приоритет:</label>
                     <select disabled={!canEdit} name="priority" id="priority" value={priority} onChange={(e) => setPriority(e.target.value)}>
                         <option value="Высокий">Высокий</option>
@@ -259,7 +298,7 @@ const Modal = forwardRef(({ closeModal }, ref) => {
                         <option value='Выполнена'>Выполнена</option>
                         <option value='Отменена'>Отменена</option>
                     </select>
-                    <button className="btn btn-primary" disabled={loading}>{loading ? 'Отправка...' : 'Сохранить'}</button>
+                    <button className="btn btn-primary" disabled={loading}>{loading ? 'Сохранение' : 'Сохранить'}</button>
                     {canEdit && <button className="btn btn-delete" disabled={deleting} onClick={handleDeleteTodo}>{deleting ? 'Удаление' : 'Удалить'}</button>}
                 </form>
             )

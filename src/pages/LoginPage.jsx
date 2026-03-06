@@ -80,7 +80,7 @@ const LoginPage = () => {
                         <img width={25} src={isHidePass ? 'show.png' : 'hide.png'} alt="Иконка показать/скрыть пароль" title={isHidePass ? 'Показать пароль' : 'Скрыть пароль'} />
                     </div>
                 </div>
-                <button className="btn btn-primary" disabled={isLoading}>{isLoading ? 'Отправка...' : 'Войти'}</button>
+                <button className="btn btn-primary" disabled={isLoading}>{isLoading ? 'Вход' : 'Войти'}</button>
                 {error && <p className="error-message">Ошибка: {error}</p>}
             </form>
             <Link to={'/register'}>Создать аккаунт</Link>

@@ -6,6 +6,7 @@ import MainPage from "./pages/MainPage";
 import Loader from "./components/Loader";
 import ProtectedRoute from "./components/ProtectedRoute";
 import './App.css';
+import './media.css';
 import NotFoundPage from "./pages/NotFoundPage";
 
 export const AppContext = createContext();
