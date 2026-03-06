@@ -1,6 +1,6 @@
 const Loader = () => {
     return (
-        <div className="loader"></div>
+        <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
     );
 }
  

@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { AppContext } from "../App";
+import Loader from "../components/Loader";
 
 const LoginPage = () => {
     const [login, setLogin] = useState('');
