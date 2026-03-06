@@ -20,7 +20,8 @@ const TodoCard = ({ cardKey, todo, openModal }) => {
     const currentDateObj = parseDate(currentDate);
 
     return (
-        <li className="todo-card" key={cardKey} onClick={() => {openModal('edit'); setSelectedTodoId(todo.id)}}>
+        <li className={`todo-card ${expireDateObj < currentDateObj && status !== 'Выполнена' && 'expired'}`} key={cardKey} onClick={() => {openModal('edit'); setSelectedTodoId(todo.id)}}>
+            
             <div className="todo-card-header">
                 <div className="todo-badges">
                     <PriorityBadge priority={priority} />
@@ -39,7 +40,7 @@ const TodoCard = ({ cardKey, todo, openModal }) => {
 
                 <div className="meta-item">
                     <CalendarIcon />
-                    <span>Срок выполнения до: {expireDate}</span>
+                    <span>Срок выполнения до: {expireDate}{expireDateObj < currentDateObj && status !== 'Выполнена' && ' - Просрочена!'}</span>
                 </div>
 
                 <div className="meta-item">

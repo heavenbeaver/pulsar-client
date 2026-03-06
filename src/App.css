@@ -439,6 +439,15 @@ button {
     margin-bottom: 20px;
 }
 
+.todo-card.expired {
+    border-color: rgba(255, 92, 122, 0.2);
+    background-color: ;
+}
+
+.todo-card.expired .meta-item:nth-child(2) {
+    color: var(--high);
+}
+
 .todo-description {
     white-space: pre-wrap;
 }
@@ -686,11 +695,11 @@ body.modal-open {
 }
 
 .title-green {
-    color: green;
+    color: var(--low) !important;
 }
 
 .title-red {
-    color: #dc2626;
+    color: var(--high);
 }
 
 .btn-delete {
@@ -835,5 +844,3 @@ body.modal-open {
     scrollbar-width: thin;
     scrollbar-color: #2a2f45 transparent;
 }
-
-/*  */

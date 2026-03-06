@@ -1,9 +1,11 @@
 import { forwardRef, useState, useContext, useEffect, useMemo } from "react";
 import CrossIcon from '../icons/CrossIcon';
 import { AppContext } from "../App";
+
 import Flatpickr from "react-flatpickr";
 import "flatpickr/dist/themes/material_blue.css";
 import { Russian } from "flatpickr/dist/l10n/ru";
+
 import FormEditSkeleton from "./Skeletons/FormEditSkeleton";
 
 const Modal = forwardRef(({ closeModal }, ref) => {
@@ -200,7 +202,9 @@ const Modal = forwardRef(({ closeModal }, ref) => {
                 <form className="todo-form" onSubmit={handleSubmit}>
                     <h2 className="form-title">Создание задачи</h2>
                     <input type="text" name="title" id="title" value={title} placeholder="Название" onChange={(e) => setTitle(e.target.value)} required />
+
                     <textarea placeholder="Описание задачи" name="desc" id="desc" value={desc} onChange={(e) => setDesc(e.target.value)} required></textarea>
+                    
                     {isMobile ? (
                         <>
                             <label htmlFor="date">Срок выполнения до:</label>

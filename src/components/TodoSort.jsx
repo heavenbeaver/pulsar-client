@@ -1,7 +1,6 @@
 import { AppContext } from "../App";
 import { useContext, useMemo } from "react";
 
-
 const TodoSort = () => {
     const { groupTodoList, setGroupTodoList, todos } = useContext(AppContext);
 
@@ -32,7 +31,7 @@ const TodoSort = () => {
             // просрочено
             if (todo.expireDate) {
                 const expireDate = parseDate(todo.expireDate);
-                if (expireDate && expireDate < currentDateObj) acc.expired++;
+                if (expireDate && expireDate < currentDateObj && todo.status !== 'Выполнена') acc.expired++;
             }
 
             return acc;
