@@ -4,6 +4,7 @@ import { AppContext } from "../App";
 import Flatpickr from "react-flatpickr";
 import "flatpickr/dist/themes/material_blue.css";
 import { Russian } from "flatpickr/dist/l10n/ru";
+import FormEditSkeleton from "./Skeletons/FormEditSkeleton";
 
 const Modal = forwardRef(({ closeModal }, ref) => {
     const { user, users, getUserFullName, editMode, selectedTodoId, todoData, setTodoData } = useContext(AppContext);
@@ -15,6 +16,7 @@ const Modal = forwardRef(({ closeModal }, ref) => {
     const [responsible, setResponsible] = useState('');
     const [status, setStatus] = useState('');
     const [deleting, setDeleting] = useState(false);
+    const [loadingTodo, setLoadingTodo] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -91,6 +93,7 @@ const Modal = forwardRef(({ closeModal }, ref) => {
         if (!selectedTodoId) return;
 
         const fetchTodoData = async () => {
+            setLoadingTodo(true);
             try {
                 const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/todos/${selectedTodoId}`, {
                     method: 'GET',
@@ -108,10 +111,12 @@ const Modal = forwardRef(({ closeModal }, ref) => {
                 setTodoData(data);
             } catch (err) {
                 console.error(err)
+            } finally {
+                setLoadingTodo(false);
             }
         }
         fetchTodoData();
-    }, [selectedTodoId, setTodoData]);
+    }, [selectedTodoId]);
 
     useEffect(() => {
         if (editMode === 'edit') {
@@ -189,10 +194,10 @@ const Modal = forwardRef(({ closeModal }, ref) => {
 
     return (
         <div ref={ref} className="modal">
-            {editMode === 'create' ?
+            {editMode === 'create' ? (
                 <form className="todo-form" onSubmit={handleSubmit}>
                     <h2 className="form-title">Создание задачи</h2>
-                    <input type="text" name="title" id="title" value={title} placeholder="Название" onChange={(e) => setTitle(e.target.value)} required/>
+                    <input type="text" name="title" id="title" value={title} placeholder="Название" onChange={(e) => setTitle(e.target.value)} required />
                     <textarea placeholder="Описание задачи" name="desc" id="desc" value={desc} onChange={(e) => setDesc(e.target.value)} required></textarea>
                     <Flatpickr
                         value={expireDate}
@@ -211,14 +216,16 @@ const Modal = forwardRef(({ closeModal }, ref) => {
                     <label htmlFor="responsible">Ответственный за выполнение:</label>
                     <select name="responsible" id="responsible" value={responsible} onChange={(e) => setResponsible(e.target.value)}>
                         <option value={user.id}>{getUserFullName(user.id)}</option>
-                        
+
                         {users && users.filter(item => item.head === user.id).map(user => {
                             return <option key={user.id} value={user.id}>{getUserFullName(user.id)}</option>
                         })}
                     </select>
                     <button className="btn btn-primary" disabled={loading}>{loading ? 'Отправка...' : 'Создать задачу'}</button>
                 </form>
-                :
+            ) : loadingTodo ? (
+                <FormEditSkeleton />
+            ) : (
                 <form className="todo-form" onSubmit={handleEditSubmit}>
                     <h2 className="form-title">Редактирование задачи</h2>
                     <input disabled={!canEdit} type="text" name="title" id="title" value={title} placeholder="Название" onChange={(e) => setTitle(e.target.value)} />
@@ -233,7 +240,7 @@ const Modal = forwardRef(({ closeModal }, ref) => {
                         }}
                     />
                     <label htmlFor="priority">Приоритет:</label>
-                    <select disabled={!canEdit}  name="priority" id="priority" value={priority} onChange={(e) => setPriority(e.target.value)}>
+                    <select disabled={!canEdit} name="priority" id="priority" value={priority} onChange={(e) => setPriority(e.target.value)}>
                         <option value="Высокий">Высокий</option>
                         <option value="Средний">Средний</option>
                         <option value="Низкий">Низкий</option>
@@ -253,8 +260,9 @@ const Modal = forwardRef(({ closeModal }, ref) => {
                         <option value='Отменена'>Отменена</option>
                     </select>
                     <button className="btn btn-primary" disabled={loading}>{loading ? 'Отправка...' : 'Сохранить'}</button>
-                    { canEdit && <button className="btn btn-delete" disabled={deleting} onClick={handleDeleteTodo}>{deleting ? 'Удаление' : 'Удалить'}</button>}
+                    {canEdit && <button className="btn btn-delete" disabled={deleting} onClick={handleDeleteTodo}>{deleting ? 'Удаление' : 'Удалить'}</button>}
                 </form>
+            )
             }
             <button className="btn-close" onClick={closeModal}><CrossIcon /></button>
         </div>

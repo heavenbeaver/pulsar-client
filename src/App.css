@@ -183,7 +183,7 @@ button {
     justify-content: space-between;
     padding: 0 32px;
     height: 64px;
-    background: rgba(15, 17, 23, 0.8);
+    background: rgba(26, 30, 42, 0.5);
     backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border);
     position: sticky;
@@ -413,12 +413,24 @@ button {
     font-weight: 600;
 }
 
+.empty-todo-list {
+    display: block;
+    margin: 20px 0;
+    padding: 30px 0;
+    width: 100%;
+    border-radius: var(--radius-sm);
+    text-align: center;
+    border: 1px solid;
+    border-color: var(--border);
+    color: var(--text-muted);
+}
+
 /* TODO-CARD */
 .todo-card {
     background-color: var(--surface);
     border-radius: 12px;
     padding: 20px;
-    min-width: 400px;
+    min-width: 200px;
     transition: .2s linear transform;
     border: 1px solid var(--border);
     cursor: pointer;
@@ -741,5 +753,24 @@ body.modal-open {
 @keyframes l23 {
     100% {
         transform: rotate(1turn);
+    }
+}
+
+
+/* SKELETON */
+.skeleton {
+    background: linear-gradient(90deg, #1e2130 25%, #2a2f45 50%, #1e2130 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 8px;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
     }
 }

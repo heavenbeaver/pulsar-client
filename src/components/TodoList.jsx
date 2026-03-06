@@ -184,16 +184,20 @@ const TodoList = ({ openModal }) => {
                                 <div className="group-line"></div>
                                 <span>{groupItems.length}</span>
                             </div>
-
-                            <ul className="todo-list">
-                                {groupItems.map(todo => (
-                                    <TodoCard
-                                        key={todo.id}
-                                        todo={todo}
-                                        openModal={openModal}
-                                    />
-                                ))}
-                            </ul>
+                            {groupItems.length > 0 ? (
+                                <ul className="todo-list">
+                                    {groupItems.map(todo => (
+                                        <TodoCard
+                                            key={todo.id}
+                                            todo={todo}
+                                            openModal={openModal}
+                                        />
+                                    ))}
+                                </ul>
+                            ) : (
+                                <div className="empty-todo-list">Нет задач</div>
+                            )}
+                            
                         </div>
                     );
                 })
