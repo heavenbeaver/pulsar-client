@@ -1,8 +1,8 @@
 import PlusIcon from "../icons/PlusIcon";
 
-const TodoCreateBtn = ({openModal, setEditMode}) => {
+const TodoCreateBtn = ({openModal, setEditMode, theme}) => {
     return (
-        <button className="new-todo" onClick={() => {openModal('create'); setEditMode('create')}}><PlusIcon /></button>
+        <button className="new-todo" onClick={() => {openModal('create'); setEditMode('create')}}><PlusIcon theme={theme} /></button>
     );
 }
  

@@ -20,7 +20,9 @@ function App() {
   const [editMode, setEditMode] = useState(null);
   const [selectedTodoId, setSelectedTodoId] = useState(null);
   const [todoData, setTodoData] = useState(null);
+  const [refetch, setRefetch] = useState(false);
   const [groupTodoList, setGroupTodoList] = useState(localStorage.getItem('groupTodoList') || 'Без группировок');
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark');
 
   const checkAuth = async () => {
     const token = localStorage.getItem('token');
@@ -39,14 +41,26 @@ function App() {
         },
       });
 
-      const data = await res.json();
-      setUser(data); // сохраняем пользователя в контексте
+      if (res.ok) {
+        const data = await res.json();
+        setUser(data); // сохраняем пользователя в контексте
+      } else {
+        localStorage.removeItem('token');
+        setUser(null);
+        alert('Похоже что ваша учетная запись была удалена');
+      }
+
     } catch (err) {
       console.error('Fetch /auth/me error:', err);
     } finally {
       setAuthLoading(false);
     }
   }
+
+  useEffect(() => {
+    document.body.classList.toggle('dark', theme === 'dark')
+    document.body.classList.toggle('light', theme === 'light')
+  }, [theme])
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -70,6 +84,8 @@ function App() {
   useEffect(() => {
     checkAuth();
   }, []);
+
+
 
   // Функция для получения ФИО по ID
   const getUserFullName = (userId) => {
@@ -95,8 +111,12 @@ function App() {
     )
   }
 
+  
+
+  const providerValues = { user, setUser, todos, setTodos, users, setUsers, getUserFullName, editMode, setEditMode, selectedTodoId, setSelectedTodoId, todoData, setTodoData, groupTodoList, setGroupTodoList, subordinates, setSubordinates, refetch, setRefetch, theme, setTheme }
+
   return (
-    <AppContext.Provider value={{ user, setUser, todos, setTodos, users, setUsers, getUserFullName, editMode, setEditMode, selectedTodoId, setSelectedTodoId, todoData, setTodoData, groupTodoList, setGroupTodoList, subordinates, setSubordinates }}>
+    <AppContext.Provider value={providerValues}>
       <Router>
         <Routes>
           <Route path="/" element={

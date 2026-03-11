@@ -1,7 +1,19 @@
 @media (max-width: 768px) {
     .todo-list {
-        columns: 1;
-        /* одна колонка вместо двух */
+        grid-template-columns: 1fr;
+    }
+
+    .screen {
+        grid-template-columns: 1fr;
+    }
+
+    .left {
+        display: none;
+    }
+
+    .form-login {
+        max-height: calc(100dvh - 200px);
+        overflow: scroll;
     }
 
     .toolbar {

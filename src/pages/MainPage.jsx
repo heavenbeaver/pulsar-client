@@ -5,11 +5,18 @@ import Header from "../components/Header";
 import TodoList from "../components/TodoList";
 import TodoSort from "../components/TodoSort";
 import TodoCreateBtn from "../components/TodoCreateBtn";
-import Modal from "../components/Modal";
+import Modal from "../components/Modal/Modal";
 import ScrollTopBtn from "../components/ScrollTopBtn";
 
+const scrollTop = () => {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    })
+};
+
 const MainPage = () => {
-    const { editMode, setEditMode, setSelectedTodoId, setTodoData, groupTodoList } = useContext(AppContext);
+    const { setEditMode, setSelectedTodoId, setTodoData, theme, setTheme } = useContext(AppContext);
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
     const modal = useRef('');
@@ -39,15 +46,8 @@ const MainPage = () => {
         document.body.classList.remove('modal-open');
     }
 
-    const scrollTop = () => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        })
-    };
-
+    // Отслеживание скролла
     useEffect(() => {
-        // Функция для отслеживания скролла
         const handleScroll = () => {
             if (window.scrollY > 200) {
                 setShowButton(true);
@@ -55,12 +55,15 @@ const MainPage = () => {
                 setShowButton(false);
             }
         };
+
         window.addEventListener('scroll', handleScroll);
+
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
-
     }, [])
+
+
 
     return (
         <>
@@ -71,10 +74,11 @@ const MainPage = () => {
             </div>
             <Modal ref={modal} closeModal={closeModal} />
 
-            <TodoCreateBtn openModal={openModal} setEditMode={setEditMode} />
+            <TodoCreateBtn theme={theme} openModal={openModal} setEditMode={setEditMode} />
 
             <div ref={overlay} className="modal-overlay" onClick={closeModal}></div>
-            {showButton && <ScrollTopBtn scrollTop={scrollTop} />}
+
+            {showButton && <ScrollTopBtn theme={theme} scrollTop={scrollTop} />}
         </>
     );
 }

@@ -30,7 +30,7 @@ const TodoCard = ({ cardKey, todo, openModal }) => {
                 <h3 className={`todo-title ${status == 'Выполнена' && 'title-green'} ${expireDateObj < currentDateObj && status !== 'Выполнена' && 'title-red'}`}>{title}</h3>
             </div>
 
-            <p className="todo-description">{desc}</p>
+            <p className="todo-description">{desc ? desc : 'Описание отсутствует'}</p>
 
             <div className="todo-meta">
                 <div className="meta-item">

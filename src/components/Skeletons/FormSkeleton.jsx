@@ -1,4 +1,4 @@
-const FormEditSkeleton = () => {
+const FormSkeleton = () => {
     return (
         <div className="todo-form">
             <div className="skeleton" style={{ width: '50%', height: '30px', margin: '0 auto' }}></div>
@@ -12,4 +12,4 @@ const FormEditSkeleton = () => {
     );
 }
  
-export default FormEditSkeleton;
+export default FormSkeleton;

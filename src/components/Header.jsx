@@ -1,18 +1,17 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { AppContext } from "../App";
 import { useNavigate } from "react-router-dom";
-import UserAvatar from "../icons/UserAvatar";
-import SettingsIcon from "../icons/SettingsIcon";
 import ExitIcon from "../icons/ExitIcon";
+import LogoIcon from "../icons/LogoIcon";
+import ThemeSwitchButton from "./ColorSchemeSwitch/ThemeSwitchButton";
 const URL = import.meta.env.VITE_SERVER_URL;
 
 const Header = () => {
-    const { user, setUser, setTodos } = useContext(AppContext);
+    const { user, setUser, setTodos, theme, setTheme } = useContext(AppContext);
     const [isLoading, setIsLoading] = useState(false);
     const [showContext, setShowContext] = useState(false);
-
-    const contextRef = useRef(null); // ref для контекстного меню
-    const userTopRef = useRef(null); // ref для кнопки открытия
+    const contextRef = useRef(null);
+    const userTopRef = useRef(null);
 
     const navigate = useNavigate();
 
@@ -29,8 +28,10 @@ const Header = () => {
 
             if (res.status == 204) {
                 localStorage.removeItem('token');
+                localStorage.removeItem('theme');
                 setUser(null);
                 setTodos(null);
+                setTheme('dark');
                 navigate('/login', { replace: true });
             }
         } catch (error) {
@@ -42,7 +43,6 @@ const Header = () => {
 
     useEffect(() => {
         const handleClickOutside = (event) => {
-            // Если клик был не по меню и не по кнопке открытия
             if (contextRef.current &&
                 !contextRef.current.contains(event.target) &&
                 userTopRef.current &&
@@ -61,31 +61,52 @@ const Header = () => {
         setShowContext(!showContext);
     }
 
+    const switchTheme = (currentTheme) => {
+        if (currentTheme === 'dark') {
+            setTheme('light');
+            localStorage.setItem('theme', 'light');
+        } else {
+            setTheme('dark');
+            localStorage.setItem('theme', 'dark');
+        }
+    };
+
     const avatarName = `${user.lastName ? user.lastName[0] : ''}${user.name ? user.name[0] : ''}`;
 
     return (
         <div className="header">
-            <div className="logo">
-                <div className="logo-icon">✓</div>
-                ToDo App
-            </div>
+            <div className="header-container">
+                <div className="logo">
+                    <div className="logo-icon">
+                        <LogoIcon />
+                    </div>
+                    <div className="logo-wordmark">
+                        пульс<span>ар</span>
+                    </div>
+                </div>
 
-            <div className="user-pill" onClick={toggleContext} ref={userTopRef}>
-                <div className="avatar">{`${avatarName}`}</div>
-                {user && <span className="user-name">{`${user.lastName} ${user.name} ${user.patronymic}`}</span>}
+                <div className="header-right">
+                    <div className="user-pill" onClick={toggleContext} ref={userTopRef}>
+                        <div className="avatar">{`${avatarName}`}</div>
+                        {user && <span className="user-name">{`${user.lastName} ${user.name} ${user.patronymic}`}</span>}
 
-                {showContext && <div className="user__context" ref={contextRef}>
-                    <ul className="context-list">
-                        {/* {user.isAdmin && <li className="context-item">
-                            <SettingsIcon />
-                            <a href="#">Администрирование</a>
-                        </li>} */}
-                        <li className="context-item">
-                            <ExitIcon />
-                            <button disabled={isLoading} onClick={handleLogout}>{isLoading ? 'Выход...' : 'Выйти'}</button>
-                        </li>
-                    </ul>
-                </div>}
+                        {showContext && <div className="user__context" ref={contextRef}>
+                            <ul className="context-list">
+                                {/* {user.isAdmin && <li className="context-item">
+                                <SettingsIcon />
+                                <a href="#">Администрирование</a>
+                                </li>} */}
+                                <li className="context-item">
+                                    <ExitIcon />
+                                    <button disabled={isLoading} onClick={handleLogout}>{isLoading ? 'Выход...' : 'Выйти'}</button>
+                                </li>
+                            </ul>
+                        </div>}
+                    </div>
+
+                    <ThemeSwitchButton theme={theme} switchTheme={() => switchTheme(theme)} />
+                </div>
+
             </div>
         </div>
     );

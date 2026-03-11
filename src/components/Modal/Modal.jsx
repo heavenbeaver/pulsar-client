@@ -1,15 +1,14 @@
 import { forwardRef, useState, useContext, useEffect, useMemo } from "react";
-import CrossIcon from '../icons/CrossIcon';
-import { AppContext } from "../App";
-
+import CrossIcon from '../../icons/CrossIcon';
+import { AppContext } from "../../App";
 import Flatpickr from "react-flatpickr";
 import "flatpickr/dist/themes/material_blue.css";
 import { Russian } from "flatpickr/dist/l10n/ru";
-
-import FormEditSkeleton from "./Skeletons/FormEditSkeleton";
+import FormSkeleton from "../Skeletons/FormSkeleton";
+import CloseBtn from "./CloseBtn";
 
 const Modal = forwardRef(({ closeModal }, ref) => {
-    const { user, users, getUserFullName, editMode, selectedTodoId, todoData, setTodoData } = useContext(AppContext);
+    const { user, users, getUserFullName, editMode, selectedTodoId, todoData, setTodoData, refetch, setRefetch, theme } = useContext(AppContext);
     const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState('');
     const [desc, setDesc] = useState('');
@@ -61,7 +60,7 @@ const Modal = forwardRef(({ closeModal }, ref) => {
             setExpireDate('');
             setPriority('Высокий');
             setResponsible(user.id);
-
+            setRefetch(!refetch);
             closeModal();
         } catch (error) {
             console.log(error)
@@ -86,6 +85,7 @@ const Modal = forwardRef(({ closeModal }, ref) => {
             }
 
             setDeleting(false);
+            setRefetch(!refetch);
             closeModal();
         } catch (err) {
             setDeleting(false)
@@ -113,12 +113,14 @@ const Modal = forwardRef(({ closeModal }, ref) => {
 
                 const data = await res.json();
                 setTodoData(data);
+                setRefetch(!refetch);
             } catch (err) {
                 console.error(err)
             } finally {
                 setLoadingTodo(false);
             }
         }
+
         fetchTodoData();
     }, [selectedTodoId]);
 
@@ -174,6 +176,7 @@ const Modal = forwardRef(({ closeModal }, ref) => {
                 console.log(res)
             }
             setLoading(false);
+            setRefetch(!refetch);
             closeModal();
         } catch (error) {
             console.log(error)
@@ -203,8 +206,8 @@ const Modal = forwardRef(({ closeModal }, ref) => {
                     <h2 className="form-title">Создание задачи</h2>
                     <input type="text" name="title" id="title" value={title} placeholder="Название" onChange={(e) => setTitle(e.target.value)} required />
 
-                    <textarea placeholder="Описание задачи" name="desc" id="desc" value={desc} onChange={(e) => setDesc(e.target.value)} required></textarea>
-                    
+                    <textarea placeholder="Описание задачи" name="desc" id="desc" value={desc} onChange={(e) => setDesc(e.target.value)}></textarea>
+
                     {isMobile ? (
                         <>
                             <label htmlFor="date">Срок выполнения до:</label>
@@ -249,12 +252,12 @@ const Modal = forwardRef(({ closeModal }, ref) => {
                     <button className="btn btn-primary" disabled={loading}>{loading ? 'Создание' : 'Создать задачу'}</button>
                 </form>
             ) : loadingTodo ? (
-                <FormEditSkeleton />
+                <FormSkeleton />
             ) : (
                 <form className="todo-form" onSubmit={handleEditSubmit}>
-                    <h2 className="form-title">Редактирование задачи</h2>
+                    <h2 className="form-title">Редактирование</h2>
                     <input disabled={!canEdit} type="text" name="title" id="title" value={title} placeholder="Название" onChange={(e) => setTitle(e.target.value)} />
-                    <textarea disabled={!canEdit} placeholder="Описание задачи" name="desc" id="desc" value={desc} onChange={(e) => setDesc(e.target.value)} required></textarea>
+                    <textarea disabled={!canEdit} placeholder="Описание задачи" name="desc" id="desc" value={desc} onChange={(e) => setDesc(e.target.value)}></textarea>
                     {isMobile ? (
                         <>
                             <label htmlFor="date">Срок выполнения до:</label>
@@ -307,7 +310,7 @@ const Modal = forwardRef(({ closeModal }, ref) => {
                 </form>
             )
             }
-            <button className="btn-close" onClick={closeModal}><CrossIcon /></button>
+            <CloseBtn closeModal={closeModal} theme={theme} />
         </div>
     );
 })

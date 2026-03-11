@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="1000"><style>
+    #light-icon {
+      display: inline;
+    }
+    #dark-icon {
+      display: none;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      #light-icon {
+        display: none;
+      }
+      #dark-icon {
+        display: inline;
+      }
+    }
+  </style><g id="light-icon"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="1000"><g clip-path="url(#SvgjsClipPath1162)"><rect width="1000" height="1000" fill="#000000"></rect><g transform="matrix(11.11111111111111,0,0,11.11111111111111,100,100)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72" fill="none" width="72" height="72"><circle classname="ring" cx="36" cy="36" r="28" stroke="#4DFFD2" strokewidth="1"></circle><circle classname="ring" cx="36" cy="36" r="20" stroke="#4DFFD2" strokewidth="1.5"></circle><circle classname="ring" cx="36" cy="36" r="12" stroke="#4DFFD2" strokewidth="2"></circle><circle classname="dot-pulse" cx="36" cy="36" r="5" fill="#4DFFD2"></circle><line x1="36" y1="4" x2="36" y2="14" stroke="#4DFFD2" strokewidth="1.5" opacity="0.4"></line><line x1="36" y1="58" x2="36" y2="68" stroke="#4DFFD2" strokewidth="1.5" opacity="0.4"></line><line x1="4" y1="36" x2="14" y2="36" stroke="#4DFFD2" strokewidth="1.5" opacity="0.4"></line><line x1="58" y1="36" x2="68" y2="36" stroke="#4DFFD2" strokewidth="1.5" opacity="0.4"></line></svg></g></g><defs><clipPath id="SvgjsClipPath1162"><rect width="1000" height="1000" x="0" y="0" rx="500" ry="500"></rect></clipPath></defs></svg></g><g id="dark-icon"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="1000"><g><g transform="matrix(13.88888888888889,0,0,13.88888888888889,0,0)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72" fill="none" width="72" height="72"><circle classname="ring" cx="36" cy="36" r="28" stroke="#4DFFD2" strokewidth="1"></circle><circle classname="ring" cx="36" cy="36" r="20" stroke="#4DFFD2" strokewidth="1.5"></circle><circle classname="ring" cx="36" cy="36" r="12" stroke="#4DFFD2" strokewidth="2"></circle><circle classname="dot-pulse" cx="36" cy="36" r="5" fill="#4DFFD2"></circle><line x1="36" y1="4" x2="36" y2="14" stroke="#4DFFD2" strokewidth="1.5" opacity="0.4"></line><line x1="36" y1="58" x2="36" y2="68" stroke="#4DFFD2" strokewidth="1.5" opacity="0.4"></line><line x1="4" y1="36" x2="14" y2="36" stroke="#4DFFD2" strokewidth="1.5" opacity="0.4"></line><line x1="58" y1="36" x2="68" y2="36" stroke="#4DFFD2" strokewidth="1.5" opacity="0.4"></line></svg></g></g></svg></g></svg>
