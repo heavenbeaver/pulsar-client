@@ -5,15 +5,22 @@
 
     .screen {
         grid-template-columns: 1fr;
+        overflow-y: scroll;
+        padding: 50px 0;
     }
 
     .left {
         display: none;
     }
 
-    .form-login {
-        max-height: calc(100dvh - 200px);
-        overflow: scroll;
+    .right .logo {
+        display: flex;
+        margin-bottom: 10px;
+    }
+
+    .right .hero-eyebrow {
+        display: inline;
+        margin-bottom: 20px;
     }
 
     .toolbar {
@@ -46,5 +53,9 @@
         min-height: 100dvh;
         border-radius: 0;
         overflow-y: scroll;
+    }
+
+    .btn-up:hover, .new-todo:hover, .switch-theme-btn:hover {
+        border-color: var(--border);
     }
 }

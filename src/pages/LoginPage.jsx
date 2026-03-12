@@ -86,15 +86,47 @@ const LoginPage = () => {
                     </div>
                     <div className="hero-text">
                         <div className="hero-eyebrow">Система управления тикетами</div>
-                        <div className="hero-title">Каждый запрос<br /><span>под контролем.</span></div>
+                        <div className="hero-title">Каждая задача<br /><span>под контролем.</span></div>
                         <div className="hero-desc">
                             Отслеживайте, приоритизируйте и решайте задачи команды — всё в одном месте. Сигнал всегда чистый.
                         </div>
                     </div>
-                    <div className="blank"></div>
+                    <div className="waveform">
+                        <div className="wave-bar" style={{height:'40%'}}></div>
+                        <div className="wave-bar" style={{height:'70%'}}></div>
+                        <div className="wave-bar" style={{height:'55%'}}></div>
+                        <div className="wave-bar" style={{height:'90%'}}></div>
+                        <div className="wave-bar" style={{height:'65%'}}></div>
+                        <div className="wave-bar" style={{height:'45%'}}></div>
+                        <div className="wave-bar" style={{height:'80%'}}></div>
+                        <div className="wave-bar" style={{height:'60%'}}></div>
+                        <div className="wave-bar" style={{height:'75%'}}></div>
+                        <div className="wave-bar" style={{height:'50%'}}></div>
+                        <div className="wave-bar" style={{height:'35%'}}></div>
+                        <div className="wave-bar" style={{height:'85%'}}></div>
+                        <div className="wave-bar" style={{height:'55%'}}></div>
+                        <div className="wave-bar" style={{height:'70%'}}></div>
+                        <div className="wave-bar" style={{height:'40%'}}></div>
+                        <div className="wave-bar" style={{height:'95%'}}></div>
+                        <div className="wave-bar" style={{height:'60%'}}></div>
+                        <div className="wave-bar" style={{height:'45%'}}></div>
+                        <div className="wave-bar" style={{height:'80%'}}></div>
+                        <div className="wave-bar" style={{height:'65%'}}></div>
+                    </div>
                 </div>
 
                 <div className="right">
+
+                    <div className="logo">
+                        <div className="logo-icon">
+                            <LogoIcon />
+                        </div>
+                        <div className="logo-wordmark">
+                            пульс<span>ар</span>
+                        </div>
+                    </div>
+                    <div className="hero-eyebrow">Система управления тикетами</div>
+
                     <div className="login">
 
                         <form className="form form-login" onSubmit={handleSubmit}>
