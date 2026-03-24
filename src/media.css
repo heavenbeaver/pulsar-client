@@ -44,6 +44,10 @@
         display: none;
     }
 
+    .user__context {
+        left: -200%;
+    }
+
     .form-login {
         width: 350px;
     }

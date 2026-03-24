@@ -233,7 +233,6 @@ button {
     display: grid;
     grid-template-columns: 1fr 1fr;
     min-height: 100dvh;
-    background-color: rgba(0, 0, 0, 0.8);
 }
 
 .left {
@@ -400,9 +399,10 @@ button {
 
 .form-login {
     width: 500px;
-    background-color: var(--surface2);
+    background-color: var(--surface);
     border-radius: var(--radius-sm);
     padding: 20px;
+    border: 1px solid var(--border);
 }
 
 .form-login .btn {
@@ -420,12 +420,19 @@ button {
 
 .form-login input {
     color: var(--text-primary);
+    background-color: var(--surface2);
 }
 
 .container {
     max-width: 1400px;
     padding: 32px 24px;
     margin-inline: auto;
+}
+
+.password-container+span {
+    text-align: right;
+    margin-top: 8px;
+    letter-spacing: .5px;
 }
 
 
@@ -597,14 +604,14 @@ button {
 }
 
 .user__context {
+    display: block;
     position: absolute;
     background-color: var(--surface);
     box-shadow: var(--box-shadow);
-    width: 250px;
-    height: auto;
-    border-radius: 10px;
+    min-width: 200px;
+    max-width: fit-content;
+    border-radius: var(--radius-sm);
     top: 50px;
-    right: 0px;
     overflow: hidden;
     border: 1px solid var(--border);
 }

@@ -134,7 +134,7 @@ const LoginPage = () => {
                             <h1 className="form-title">Вход</h1>
                             <h3 className="form-desc">Введите данные вашего аккаунта</h3>
 
-                            <label htmlFor="login">Логин</label>
+                            <label htmlFor="login">email</label>
                             <input
                                 type="email"
                                 name="email"

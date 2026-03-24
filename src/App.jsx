@@ -54,10 +54,6 @@ function App() {
       if (res.ok) {
         const data = await res.json();
         setUser(data); // сохраняем пользователя в контексте
-      } else {
-        localStorage.removeItem('token');
-        setUser(null);
-        alert('Похоже что ваша учетная запись была удалена');
       }
 
     } catch (err) {

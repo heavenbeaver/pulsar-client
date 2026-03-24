@@ -152,9 +152,9 @@ const RegisterPage = () => {
                             <input type="text" name="name" id="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="" required />
 
                             <label htmlFor="patronymic">Отчество</label>
-                            <input type="text" name="patronymic" id="patronymic" value={patronymic} onChange={(e) => setPatronymic(e.target.value)} placeholder="" required />
+                            <input type="text" name="patronymic" id="patronymic" value={patronymic} onChange={(e) => setPatronymic(e.target.value)} placeholder="" />
 
-                            <label htmlFor="email">Почта</label>
+                            <label htmlFor="email">email</label>
                             <input type="email" name="email" id="email" value={login} onChange={(e) => setLogin(e.target.value)} placeholder="user@company.ru" required />
 
                             <label htmlFor="password">Пароль</label>
@@ -195,7 +195,7 @@ const RegisterPage = () => {
                             <select name="head" id="head" onChange={(e) => setHead(e.target.value)}>
                                 <option>Нет</option>
                                 {users && users.map(user => {
-                                    return <option key={user.id} value={user.id}>{getUserFullName(users, user.id)}</option>
+                                    return <option key={user.id} value={user.id}>{getUserFullName(user.id)}</option>
                                 })}
                             </select>
                             <button className="btn btn-primary">{isLoading ? 'Отправка данных' : 'Зарегистрироваться'}</button>
