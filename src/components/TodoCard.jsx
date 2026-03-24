@@ -5,13 +5,16 @@ import { AppContext } from '../App';
 import PriorityBadge from './PriorityBadge';
 import StatusBadge from './StatusBadge';
 
-const currentDate = new Date().getTime();
+const currentDate = new Date();
+currentDate.setHours(0, 0, 0, 0);
 
 const TodoCard = ({ cardKey, todo, openModal }) => {
     const { title, desc, expireDate, createDate, updateDate, priority, status, creator, responsible } = todo;
     const { getUserFullName, setSelectedTodoId } = useContext(AppContext);
 
-    const expireDateObj = new Date(expireDate.split('.').reverse().join('-')).getTime();
+    const expireDateObj = new Date(expireDate.split('.').reverse().join('-'));
+    expireDateObj.setHours(0, 0, 0, 0);
+
     const createDateString = new Date(createDate).toLocaleDateString('ru-RU');
     const updateDateString = new Date(updateDate).toLocaleDateString('ru-RU');
 
