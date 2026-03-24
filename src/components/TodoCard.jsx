@@ -8,44 +8,50 @@ import StatusBadge from './StatusBadge';
 const TodoCard = ({ cardKey, todo, openModal }) => {
     const { title, desc, expireDate, createDate, updateDate, priority, status, creator, responsible } = todo;
     const { getUserFullName, setSelectedTodoId } = useContext(AppContext);
-    const currentDate = new Date().toLocaleDateString('ru-RU');
 
-    function parseDate(dateStr) {
-        const [day, month, year] = dateStr.split('.');
-        return new Date(year, month - 1, day);
+    const currentDate = new Date().toLocaleDateString('ru-RU');
+    const expireDateObj = new Date(expireDate).toLocaleDateString('ru-RU');
+    const createDateString = new Date(createDate).toLocaleDateString('ru-RU');
+    const updateDateString = new Date(updateDate).toLocaleDateString('ru-RU');
+
+    function getFullTime(timeString) {
+        const hours = new Date(timeString).getHours() < 10 ? `0${new Date(timeString).getHours()}` : new Date(timeString).getHours();
+        const minutes = new Date(timeString).getMinutes() < 10 ? `0${new Date(timeString).getMinutes()}` : new Date(timeString).getMinutes();
+        const fullTime = `${hours}:${minutes}`;
+        return fullTime;
     }
 
-    // Сравнение
-    const expireDateObj = parseDate(expireDate);
-    const currentDateObj = parseDate(currentDate);
-
     return (
-        <li className={`todo-card ${expireDateObj < currentDateObj && status !== 'Выполнена' && 'expired'}`} key={cardKey} onClick={() => {openModal('edit'); setSelectedTodoId(todo.id)}}>
+        <li className={`todo-card ${expireDateObj < currentDate && status !== 'Выполнена' && 'expired'}`} key={cardKey} onClick={() => {openModal('edit'); setSelectedTodoId(todo.id)}}>
             
             <div className="todo-card-header">
                 <div className="todo-badges">
                     <PriorityBadge priority={priority} />
                     <StatusBadge status={status} />
+                    {expireDateObj < currentDate && status !== 'Выполнена' && (
+                        <span className='badge badge-expired'>Просрочена</span>
+                    )}
                 </div>
-                <h3 className={`todo-title ${status == 'Выполнена' && 'title-green'} ${expireDateObj < currentDateObj && status !== 'Выполнена' && 'title-red'}`}>{title}</h3>
+                <h3 className="todo-title">{title}</h3>
             </div>
 
             <p className="todo-description">{desc ? desc : 'Описание отсутствует'}</p>
 
             <div className="todo-meta">
+
                 <div className="meta-item">
                     <CalendarIcon />
-                    <span>Создана: {createDate}</span>
+                    <span>Срок выполнения: {expireDate}</span>
                 </div>
 
                 <div className="meta-item">
                     <CalendarIcon />
-                    <span>Срок выполнения до: {expireDate}{expireDateObj < currentDateObj && status !== 'Выполнена' && ' - Просрочена!'}</span>
+                    <span>Дата создания: {createDateString} в {getFullTime(createDate)}</span>
                 </div>
 
                 <div className="meta-item">
                     <ClockIcon />
-                    <span>Обновлено: {updateDate}</span>
+                    <span>Дата обновления: {updateDateString} в {getFullTime(updateDate)}</span>
                 </div>
             </div>
 

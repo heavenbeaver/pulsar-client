@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState, useRef } from "react";
 import { AppContext } from "../App";
 import { useNavigate } from "react-router-dom";
-import Header from "../components/Header";
+import Layout from "../components/Layout";
 import TodoList from "../components/TodoList";
 import TodoSort from "../components/TodoSort";
 import TodoCreateBtn from "../components/TodoCreateBtn";
@@ -17,11 +17,11 @@ const scrollTop = () => {
 
 const MainPage = () => {
     const { setEditMode, setSelectedTodoId, setTodoData, theme, setTheme } = useContext(AppContext);
-    const navigate = useNavigate();
+    const [showButton, setShowButton] = useState(false);
     const token = localStorage.getItem('token');
     const modal = useRef('');
     const overlay = useRef('');
-    const [showButton, setShowButton] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (!token) {
@@ -67,18 +67,19 @@ const MainPage = () => {
 
     return (
         <>
-            <Header />
-            <div className="container">
-                <TodoSort />
-                <TodoList openModal={openModal} closeModal={closeModal} />
-            </div>
-            <Modal ref={modal} closeModal={closeModal} />
+            <Layout>
+                <div className="container">
+                    <TodoSort />
+                    <TodoList openModal={openModal} closeModal={closeModal} />
+                </div>
+                <Modal ref={modal} closeModal={closeModal} />
 
-            <TodoCreateBtn theme={theme} openModal={openModal} setEditMode={setEditMode} />
+                <TodoCreateBtn theme={theme} openModal={openModal} setEditMode={setEditMode} />
 
-            <div ref={overlay} className="modal-overlay" onClick={closeModal}></div>
+                <div ref={overlay} className="modal-overlay" onClick={closeModal}></div>
 
-            {showButton && <ScrollTopBtn theme={theme} scrollTop={scrollTop} />}
+                {showButton && <ScrollTopBtn theme={theme} scrollTop={scrollTop} />}
+            </Layout>
         </>
     );
 }

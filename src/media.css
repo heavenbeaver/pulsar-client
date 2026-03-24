@@ -37,7 +37,7 @@
     }
 
     .user-pill {
-        padding: 6px;
+        padding: 6.5px;
     }
 
     .user-name {
@@ -55,7 +55,9 @@
         overflow-y: scroll;
     }
 
-    .btn-up:hover, .new-todo:hover, .switch-theme-btn:hover {
+    .btn-up:hover,
+    .new-todo:hover,
+    .switch-theme-btn:hover {
         border-color: var(--border);
     }
 }

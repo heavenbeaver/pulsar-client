@@ -1,9 +1,12 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { AppContext } from "../App";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import ExitIcon from "../icons/ExitIcon";
 import LogoIcon from "../icons/LogoIcon";
+import SettingsIcon from "../icons/SettingsIcon";
 import ThemeSwitchButton from "./ColorSchemeSwitch/ThemeSwitchButton";
+import AdminPanelIcon from "../icons/AdminPanelIcon";
+import NotificationsBtn from "./NotificationsBtn";
 const URL = import.meta.env.VITE_SERVER_URL;
 
 const Header = () => {
@@ -14,6 +17,8 @@ const Header = () => {
     const userTopRef = useRef(null);
 
     const navigate = useNavigate();
+
+    
 
     const handleLogout = async () => {
         setIsLoading(true)
@@ -38,6 +43,15 @@ const Header = () => {
             console.error(error)
         } finally {
             setIsLoading(false);
+        }
+    }
+
+    function logout() {
+        let isLogout = confirm('Вы хотите выйти?');
+        if (isLogout) {
+            handleLogout();
+        } else {
+            return;
         }
     }
 
@@ -76,14 +90,14 @@ const Header = () => {
     return (
         <div className="header">
             <div className="header-container">
-                <div className="logo">
+                <Link to="/" className="logo">
                     <div className="logo-icon">
                         <LogoIcon />
                     </div>
                     <div className="logo-wordmark">
                         пульс<span>ар</span>
                     </div>
-                </div>
+                </Link>
 
                 <div className="header-right">
                     <div className="user-pill" onClick={toggleContext} ref={userTopRef}>
@@ -92,18 +106,28 @@ const Header = () => {
 
                         {showContext && <div className="user__context" ref={contextRef}>
                             <ul className="context-list">
-                                {/* {user.isAdmin && <li className="context-item">
-                                <SettingsIcon />
-                                <a href="#">Администрирование</a>
-                                </li>} */}
+                                {user.isAdmin && <li className="context-item">
+                                    <a href="/admin" className="context-btn">
+                                        <AdminPanelIcon />
+                                        <span>Администрирование</span>
+                                    </a>
+                                </li>}
                                 <li className="context-item">
-                                    <ExitIcon />
-                                    <button disabled={isLoading} onClick={handleLogout}>{isLoading ? 'Выход...' : 'Выйти'}</button>
+                                    <a href="/edit" className="context-btn">
+                                        <SettingsIcon />
+                                        <span>Настройки профиля</span>
+                                    </a>
+                                </li>
+                                <li className="context-item">
+                                    <button className="context-btn" disabled={isLoading} onClick={logout}>
+                                        <ExitIcon />
+                                        <span>{isLoading ? 'Выход...' : 'Выйти'}</span>
+                                    </button>
                                 </li>
                             </ul>
                         </div>}
                     </div>
-
+                    <NotificationsBtn />
                     <ThemeSwitchButton theme={theme} switchTheme={() => switchTheme(theme)} />
                 </div>
 

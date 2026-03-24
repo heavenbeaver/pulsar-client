@@ -1,5 +1,5 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { createContext, useEffect, useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { createContext, useCallback, useEffect, useState } from "react";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import MainPage from "./pages/MainPage";
@@ -8,8 +8,18 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import './App.css';
 import './media.css';
 import NotFoundPage from "./pages/NotFoundPage";
+import AdminPage from "./pages/AdminPage/AdminPage";
+import EditPage from "./pages/EditPage";
+import AdminUsers from "./pages/AdminPage/admin/AdminUsers";
+import AdminProjects from "./pages/AdminPage/admin/AdminProjects";
+import AdminTasks from "./pages/AdminPage/admin/AdminTasks";
+import AdminStat from "./pages/AdminPage/admin/AdminStat";
+import ForbiddenPage from "./pages/ForbiddenPage";
+import EditUser from "./pages/AdminPage/admin/EditUser";
 
 export const AppContext = createContext();
+
+
 
 function App() {
   const [user, setUser] = useState(null);
@@ -62,36 +72,26 @@ function App() {
     document.body.classList.toggle('light', theme === 'light')
   }, [theme])
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/users`, {
-          method: 'GET'
-        });
-        if (res.ok) {
-          const data = await res.json();
-          setUsers(data);
-        }
-      } catch (err) {
-        console.error(err)
-      };
-    }
+  const fetchUsers = useCallback(async () => {
+    try {
+      const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/users`, {
+        method: 'GET'
+      });
 
-    fetchUsers();
-
-  }, [user]);
-
-  useEffect(() => {
-    checkAuth();
+      if (res.ok) {
+        const data = await res.json();
+        setUsers(data);
+      }
+    } catch (err) {
+      console.error(err)
+    };
   }, []);
-
-
 
   // Функция для получения ФИО по ID
   const getUserFullName = (userId) => {
-    if (!users || !userId) return 'Не назначен';
+    if (!userId) return 'Не назначен';
 
-    const user = users.find(u => u.id === userId);
+    const user = users?.find(u => u.id === userId);
     if (!user) return `ID: ${userId}`;
 
     const fullName = [
@@ -103,6 +103,14 @@ function App() {
     return fullName;
   };
 
+  useEffect(() => {
+    fetchUsers();
+  }, [user, refetch]);
+
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
   if (authLoading) {
     return (
       <div className="loader-wrapper">
@@ -111,12 +119,10 @@ function App() {
     )
   }
 
-  
-
-  const providerValues = { user, setUser, todos, setTodos, users, setUsers, getUserFullName, editMode, setEditMode, selectedTodoId, setSelectedTodoId, todoData, setTodoData, groupTodoList, setGroupTodoList, subordinates, setSubordinates, refetch, setRefetch, theme, setTheme }
+  const contextValues = { user, setUser, todos, setTodos, users, setUsers, getUserFullName, editMode, setEditMode, selectedTodoId, setSelectedTodoId, todoData, setTodoData, groupTodoList, setGroupTodoList, subordinates, setSubordinates, refetch, setRefetch, theme, setTheme }
 
   return (
-    <AppContext.Provider value={providerValues}>
+    <AppContext.Provider value={contextValues}>
       <Router>
         <Routes>
           <Route path="/" element={
@@ -126,6 +132,21 @@ function App() {
           />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+
+          <Route path="/admin" element={<ProtectedRoute requiredRole="admin"><AdminPage /></ProtectedRoute>}>
+            <Route path="users" element={<AdminUsers />} />
+            <Route path="users/:id" element={<EditUser />} />
+            <Route path="projects" element={<AdminProjects />} />
+            <Route path="tasks" element={<AdminTasks />} />
+            <Route path="stat" element={<AdminStat />} />
+
+            {/* Редирект с /admin на /admin/users */}
+            <Route index element={<Navigate to="users" replace />} />
+          </Route>
+
+          <Route path="/edit" element={<ProtectedRoute><EditPage /></ProtectedRoute>} />
+          <Route path="/403" element={<ForbiddenPage />} />
+
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Router>

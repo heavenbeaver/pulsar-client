@@ -132,7 +132,7 @@ select:focus {
     border-color: var(--low);
 }
 
-select option {
+select option:not(.flatpickr-monthDropdown-month) {
     color: var(--text-primary);
 }
 
@@ -153,7 +153,6 @@ button {
 .btn-primary {
     background-color: var(--low);
     color: var(--bg);
-    transition: .3s linear box-shadow;
 }
 
 .btn-primary:focus {
@@ -454,16 +453,12 @@ button {
     display: block;
     width: 45px;
     height: 45px;
-    background-color: var(--surface2);
-    border: 1px solid var(--border);
+    background-color: var(--surface);
+    outline: 1px solid var(--border);
     border-radius: 50%;
     cursor: pointer;
     padding: 5px;
     transition: .1s ease all;
-}
-
-.switch-theme-btn:hover {
-    border-color: var(--low);
 }
 
 .header-container {
@@ -478,6 +473,7 @@ button {
     display: flex;
     align-items: center;
     gap: 10px;
+    color: var(--text-primary);
 }
 
 .logo-wordmark {
@@ -558,28 +554,46 @@ button {
     position: relative;
 }
 
-.user-pill:hover {
-    border-color: var(--low);
-}
-
 .avatar {
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    background-color: var(--surface);
+    background-color: #7a82a0;
     border: 1px solid var(--border);
-    color: var(--low);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 12px;
     font-weight: 700;
+    color: #fff;
 }
 
 .user-name {
     font-size: 13px;
     font-weight: 600;
     color: var(--text-primary);
+}
+
+.notifications-btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--surface);
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    border: 1px solid var(--border);
+}
+.notifications-btn>span {
+    display: block;
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: var(--low);
+    border-radius: 50%;
+    top: 0;
+    right: 0;
 }
 
 .user__context {
@@ -601,12 +615,16 @@ button {
 }
 
 .context-item {
-    padding: 10px;
     cursor: pointer;
     display: flex;
     align-items: center;
     gap: 10px;
     transition: .1s linear all;
+}
+
+.context-item:hover {
+    background-color: var(--surface2);
+    color: #18b894;
 }
 
 .context-item a {
@@ -617,15 +635,26 @@ button {
     font-size: 13px;
 }
 
-.context-item button {
+.context-btn {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    gap: 10px;
+    padding: 10px;
     width: 100%;
     height: 100%;
     text-align: left;
     font-size: 13px;
 }
 
-.context-item:hover {
-    background-color: var(--text-muted);
+.context-btn svg {
+    width: 20px;
+    height: 20px;
+}
+
+.context-btn span {
+    font-size: 14px;
+    font-weight: 600;
 }
 
 /* TOOLBAR */
@@ -688,60 +717,6 @@ button {
 .bage-inwork {
     border-color: rgba(79, 124, 255, 0.2);
     color: var(--accent);
-}
-
-/* THEME SWITCH */
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 60px;
-    height: 34px;
-}
-
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border-radius: 34px;
-    background-color: #ccc;
-    -webkit-transition: .4s;
-    transition: .4s;
-}
-
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 26px;
-    aspect-ratio: 1;
-    left: 4px;
-    border-radius: 50%;
-    bottom: 4px;
-    background-color: white;
-    -webkit-transition: .4s;
-    transition: .4s;
-}
-
-input:checked+.slider {
-    background-color: #2196F3;
-}
-
-input:focus+.slider {
-    box-shadow: 0 0 1px #2196F3;
-}
-
-input:checked+.slider:before {
-    -webkit-transform: translateX(26px);
-    -ms-transform: translateX(26px);
-    transform: translateX(26px);
 }
 
 /* TODO-WRAPPER */
@@ -820,12 +795,13 @@ input:checked+.slider:before {
     border-radius: 12px;
     padding: 20px;
     min-width: 200px;
-    transition: .2s linear transform;
     border: 1px solid var(--border);
     cursor: pointer;
     height: fit-content;
     break-inside: avoid;
+    outline: 1px solid transparent;
     margin-bottom: 20px;
+    transition: .1s ease border-color;
 }
 
 .todo-card.expired {
@@ -833,13 +809,12 @@ input:checked+.slider:before {
     background-color: rgba(255, 92, 122, 0.1);
 }
 
-.todo-card.expired .meta-item:nth-child(2) {
+.todo-card.expired .meta-item:nth-child(1) {
     color: var(--high);
 }
 
 .todo-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    border-color: var(--low);
 }
 
 .todo-card-header {
@@ -874,6 +849,7 @@ input:checked+.slider:before {
 
 .todo-badges {
     display: flex;
+    flex-wrap: wrap;
     gap: 8px;
     margin-bottom: 12px;
 }
@@ -884,6 +860,12 @@ input:checked+.slider:before {
     font-size: 13px;
     font-weight: 600;
     min-width: fit-content;
+}
+
+.badge-expired {
+    color: var(--high);
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .priority-high {
@@ -1017,16 +999,6 @@ input:checked+.slider:before {
     border: 1px solid var(--border);
 }
 
-.btn-up:hover {
-    border-color: var(--low);
-}
-
-.new-todo:hover {
-    border-color: var(--low);
-}
-
-
-
 /* MODAL */
 .modal-overlay {
     top: 0;
@@ -1073,6 +1045,19 @@ body.modal-open {
     position: absolute;
     top: 30px;
     right: 30px;
+    display: flex;
+    border-radius: 50%;
+    padding: 5px;
+    border: 1px solid transparent;
+}
+.btn-close:hover {
+    background-color: var(--surface2);
+    border-color: var(--border);
+}
+
+.btn-close svg {
+    height: 18px;
+    width: 18px;
 }
 
 .todo-form {
@@ -1110,12 +1095,18 @@ body.modal-open {
 .btn-delete {
     background-color: var(--high);
     color: var(--bg);
-    transition: .3s ease all;
 }
 
-.btn-delete:hover {
+.btn-delete:hover:not(:disabled) {
     box-shadow: 0 0 10px 0 var(--high);
 }
+
+.btn-delete:disabled {
+    background-color: gray;
+    cursor: not-allowed;
+}
+
+
 
 /* NOT-FOUND PAGE */
 .not-found {
@@ -1144,11 +1135,11 @@ body.modal-open {
     display: block;
     height: 1px;
     width: 100%;
-    background-color: var(--high);
+    background-color: var(--low);
 }
 
 .not-found a:hover {
-    color: var(--high);
+    color: var(--low);
 }
 
 /* HTML: <div class="loader"></div> */

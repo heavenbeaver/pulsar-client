@@ -1,8 +1,7 @@
 import { forwardRef, useState, useContext, useEffect, useMemo } from "react";
-import CrossIcon from '../../icons/CrossIcon';
 import { AppContext } from "../../App";
 import Flatpickr from "react-flatpickr";
-import "flatpickr/dist/themes/material_blue.css";
+import "flatpickr/dist/themes/light.css";
 import { Russian } from "flatpickr/dist/l10n/ru";
 import FormSkeleton from "../Skeletons/FormSkeleton";
 import CloseBtn from "./CloseBtn";
@@ -25,14 +24,10 @@ const Modal = forwardRef(({ closeModal }, ref) => {
         e.preventDefault();
         setLoading(true);
 
-        const currentDate = new Date().toLocaleDateString('ru-RU');
-
         const formData = {
             title,
             desc,
             expireDate,
-            createDate: currentDate,
-            updateDate: currentDate,
             priority,
             status: 'К выполнению',
             creator: user.id,
@@ -150,7 +145,7 @@ const Modal = forwardRef(({ closeModal }, ref) => {
         e.preventDefault();
         setLoading(true);
 
-        const currentDate = new Date().toLocaleDateString('ru-RU');
+        const currentDate = new Date().toISOString(); // текущая дата
 
         const formData = {
             title,
@@ -208,9 +203,9 @@ const Modal = forwardRef(({ closeModal }, ref) => {
 
                     <textarea placeholder="Описание задачи" name="desc" id="desc" value={desc} onChange={(e) => setDesc(e.target.value)}></textarea>
 
+                    <label htmlFor="date">Срок выполнения до:</label>
                     {isMobile ? (
                         <>
-                            <label htmlFor="date">Срок выполнения до:</label>
                             <input
                                 type="date"
                                 id="date"
@@ -224,7 +219,6 @@ const Modal = forwardRef(({ closeModal }, ref) => {
                         </>
                     ) : (
                         <>
-                            <label htmlFor="date">Срок выполнения до:</label>
                             <Flatpickr
                                 id="date"
                                 name="date"

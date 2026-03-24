@@ -195,7 +195,7 @@ const RegisterPage = () => {
                             <select name="head" id="head" onChange={(e) => setHead(e.target.value)}>
                                 <option>Нет</option>
                                 {users && users.map(user => {
-                                    return <option key={user.id} value={user.id}>{getUserFullName(user.id)}</option>
+                                    return <option key={user.id} value={user.id}>{getUserFullName(users, user.id)}</option>
                                 })}
                             </select>
                             <button className="btn btn-primary">{isLoading ? 'Отправка данных' : 'Зарегистрироваться'}</button>
