@@ -731,8 +731,13 @@ button {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
-    padding: 20px 0;
+    margin: 20px 0;
     list-style: none;
+}
+
+.todo-list.collapsed {
+    max-height: 0px;
+    overflow: hidden;
 }
 
 .todo-group {
@@ -770,6 +775,12 @@ button {
     text-align: center;
     color: var(--text-secondary);
     font-weight: 800;
+    cursor: pointer;
+}
+
+.group-title.collapsed span {
+    background-color: #18b894;
+    color: var(--text-primary);
 }
 
 .todo-wrapper {
@@ -801,7 +812,6 @@ button {
     background-color: var(--surface);
     border-radius: 12px;
     padding: 20px;
-    min-width: 200px;
     border: 1px solid var(--border);
     cursor: pointer;
     height: fit-content;
@@ -832,7 +842,7 @@ button {
 }
 
 .todo-title {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 700;
     color: var(--text-primary);
     display: -webkit-box;
@@ -844,7 +854,7 @@ button {
 
 .todo-description {
     color: var(--text-secondary);
-    font-size: 16px;
+    font-size: 14px;
     line-height: 1.5;
     margin-bottom: 16px;
     display: -webkit-box;
@@ -864,7 +874,7 @@ button {
 .badge {
     padding: 4px 8px;
     border-radius: var(--radius);
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
     min-width: fit-content;
 }
@@ -934,14 +944,21 @@ button {
 
 .meta-item {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 8px;
     color: var(--text-secondary);
 }
 
 .meta-item span {
-    font-size: 14px;
+    font-size: 12px;
     font-family: var(--font-todo) !important;
+}
+
+.meta-item-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .meta-icon {
@@ -966,13 +983,12 @@ button {
     font-size: 12px;
     color: var(--text-muted);
     text-transform: uppercase;
-    letter-spacing: 1px;
     font-weight: 600;
 }
 
 .info__user-name {
     color: var(--text-secondary);
-    font-size: 12px;
+    font-size: 13px;
 }
 
 /* BTNS */

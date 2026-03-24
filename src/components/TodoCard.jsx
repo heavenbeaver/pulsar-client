@@ -22,8 +22,8 @@ const TodoCard = ({ cardKey, todo, openModal }) => {
     }
 
     return (
-        <li className={`todo-card ${expireDateObj < currentDate && status !== 'Выполнена' && 'expired'}`} key={cardKey} onClick={() => {openModal('edit'); setSelectedTodoId(todo.id)}}>
-            
+        <li className={`todo-card ${expireDateObj < currentDate && status !== 'Выполнена' && 'expired'}`} key={cardKey} onClick={() => { openModal('edit'); setSelectedTodoId(todo.id) }}>
+
             <div className="todo-card-header">
                 <div className="todo-badges">
                     <PriorityBadge priority={priority} />
@@ -40,18 +40,27 @@ const TodoCard = ({ cardKey, todo, openModal }) => {
             <div className="todo-meta">
 
                 <div className="meta-item">
-                    <CalendarIcon />
-                    <span>Срок выполнения: {expireDate}</span>
+                    <div className='meta-item-header'>
+                        <CalendarIcon />
+                        <span>Срок выполнения: </span>
+                    </div>
+                    <span>{expireDate}</span>
                 </div>
 
                 <div className="meta-item">
-                    <CalendarIcon />
-                    <span>Дата создания: {createDateString} в {getFullTime(createDate)}</span>
+                    <div className='meta-item-header'>
+                        <CalendarIcon />
+                        <span>Дата создания:</span>
+                    </div>
+                    <span>{createDateString} - {getFullTime(createDate)}</span>
                 </div>
 
                 <div className="meta-item">
-                    <ClockIcon />
-                    <span>Дата обновления: {updateDateString} в {getFullTime(updateDate)}</span>
+                    <div className="meta-item-header">
+                        <ClockIcon />
+                        <span>Дата обновления:</span>
+                    </div>
+                    <span>{updateDateString} - {getFullTime(updateDate)}</span>
                 </div>
             </div>
 

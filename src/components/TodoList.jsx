@@ -141,6 +141,17 @@ const TodoList = ({ openModal }) => {
         }
     }, [todos, groupTodoList, groupByResponsible]);
 
+    const toggleList = (e) => {
+        const title = e.target.parentElement;
+        const list = title.nextElementSibling;
+
+        if (title.nextElementSibling.classList.contains('empty-todo-list')) {
+            return;
+        }
+        title.classList.toggle('collapsed');
+        list.classList.toggle('collapsed');
+    }
+
     return (
         <div className="todo-wrapper">
             {!grouped ? (
@@ -153,7 +164,7 @@ const TodoList = ({ openModal }) => {
                         <div className="group-title">
                             <div className="group-name">{groupName}</div>
                             <div className="group-line"></div>
-                            <span>{groupItems.length}</span>
+                            <span onClick={toggleList}>{groupItems.length}</span>
                         </div>
                         {groupItems.length > 0 ? (
                             <ul className="todo-list">
