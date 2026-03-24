@@ -3,6 +3,10 @@
         grid-template-columns: 1fr;
     }
 
+    .todo-card:hover {
+        border-color: var(--border);
+    }
+
     .screen {
         grid-template-columns: 1fr;
         overflow-y: scroll;
