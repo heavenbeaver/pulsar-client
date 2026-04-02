@@ -146,15 +146,15 @@ const RegisterPage = () => {
                             <h3 className="form-desc">Введите данные для регистрации</h3>
 
                             <label htmlFor="lastName">Фамилия</label>
-                            <input type="text" name="lastName" id="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)} placeholder="" required />
+                            <input type="text" name="lastName" id="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)} placeholder="Иванов" required />
 
                             <label htmlFor="name">Имя</label>
-                            <input type="text" name="name" id="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="" required />
+                            <input type="text" name="name" id="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Иван" required />
 
                             <label htmlFor="patronymic">Отчество</label>
-                            <input type="text" name="patronymic" id="patronymic" value={patronymic} onChange={(e) => setPatronymic(e.target.value)} placeholder="" />
+                            <input type="text" name="patronymic" id="patronymic" value={patronymic} onChange={(e) => setPatronymic(e.target.value)} placeholder="Иванович" />
 
-                            <label htmlFor="email">email</label>
+                            <label htmlFor="email">Логин</label>
                             <input type="email" name="email" id="email" value={login} onChange={(e) => setLogin(e.target.value)} placeholder="user@company.ru" required />
 
                             <label htmlFor="password">Пароль</label>

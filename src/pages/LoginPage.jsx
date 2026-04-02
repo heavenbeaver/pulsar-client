@@ -40,7 +40,6 @@ const LoginPage = () => {
 
             if (!res.ok) {
                 setIsLoading(false);
-                // console.log(data.error);
                 setError(data.error);
                 return;
             }
@@ -134,11 +133,11 @@ const LoginPage = () => {
                             <h1 className="form-title">Вход</h1>
                             <h3 className="form-desc">Введите данные вашего аккаунта</h3>
 
-                            <label htmlFor="login">email</label>
+                            <label htmlFor="login">Логин</label>
                             <input
-                                type="email"
-                                name="email"
-                                id="email"
+                                type="text"
+                                name="login"
+                                id="login"
                                 value={login}
                                 onChange={(e) => setLogin(e.target.value)}
                                 placeholder="user@company.ru"

@@ -19,7 +19,6 @@
 .admin-items {
     display: flex;
     flex-direction: column;
-    gap: 10px;
 }
 
 .admin-item:hover {
@@ -31,7 +30,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 10px;
+    padding: 15px 10px;
 }
 .admin-item-btn svg {
     width: 18px;
@@ -44,6 +43,11 @@
 .admin-item-btn:hover {
     color: #18b894;
 }
+
+.admin-item-btn.active {
+    color: #18b894;
+}
+
 
 .admin-content {
     background-color: var(--surface);
@@ -81,6 +85,10 @@
 .users-table a {
     font-size: 13px;
     color: var(--text-primary);
+}
+
+.users-table a:hover {
+    color: var(--low);
 }
 
 .search-error {

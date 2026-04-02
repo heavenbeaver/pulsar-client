@@ -130,18 +130,22 @@ const EditUser = () => {
                 <form className="user-edit-form" onSubmit={handleSubmit}>
                     <input type="text" name="lastName" placeholder="Фамилия" value={formData.lastName} onChange={handleChange} required />
                     <input type="text" name="name" placeholder="Имя" value={formData.name} onChange={handleChange} required />
-                    <input type="text" name="patronymic" placeholder="Отчество" value={formData.patronymic} onChange={handleChange} required />
-                    <input type="email" name="login" placeholder="Почта" value={formData.login} onChange={handleChange} required />
+                    <input type="text" name="patronymic" placeholder="Отчество" value={formData.patronymic} onChange={handleChange} />
+                    <input type="text" name="login" placeholder="Почта" value={formData.login} onChange={handleChange} required />
 
-                    <label htmlFor="head">Руководитель</label>
-                    <select name="head" id="head" value={formData.head ?? ''} onChange={handleChange}>
-                        <option value="">Не назначен</option>
-                        {users && users.filter(listUser => listUser.id != id).map(user => {
-                            return <option value={user.id} key={user.id}>{getUserFullName(user.id)}</option>
-                        })}
-                    </select>
+                    {(Number(id) != 1) && (
+                        <>
+                            <label htmlFor="head">Руководитель</label>
+                            <select name="head" id="head" value={formData.head ?? ''} onChange={handleChange}>
+                                <option value="">Не назначен</option>
+                                {users && users.filter(listUser => listUser.id != id).map(user => {
+                                    return <option value={user.id} key={user.id}>{getUserFullName(user.id)}</option>
+                                })}
+                            </select>
+                        </>
+                    )}
 
-                    {user.id != id && (
+                    {(user.id != id && Number(id) != 1) && (
                         <div className="switch-wrapper">
                             <label htmlFor="adminToggle">Администратор</label>
                             <label className="switch">
@@ -153,7 +157,7 @@ const EditUser = () => {
 
                     <div className="action-btns">
                         <button className="btn btn-primary" disabled={isSaving} type="submit">{isSaving ? 'Сохранение' : 'Сохранить'}</button>
-                        {user.id != id && (
+                        {(user.id != id && Number(id) != 1) && (
                             <button className="btn btn-delete" disabled={isDeleting} type="button" onClick={handleDelete}>
                                 {!isDeleting ? 'Удалить пользователя' : 'Удаление...'}
                             </button>
