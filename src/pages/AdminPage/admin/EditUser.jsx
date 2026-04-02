@@ -40,7 +40,7 @@ const EditUser = () => {
                 lastName: userData.lastName,
                 patronymic: userData.patronymic,
                 login: userData.login,
-                head: userData.head,
+                head: userData.head || null,
                 isAdmin: userData.isAdmin
             })
 
@@ -59,7 +59,7 @@ const EditUser = () => {
         const { name, value, type, checked } = e.target;
         setFormData({
             ...formData,
-            [name]: type === 'checkbox' ? checked : value
+            [name]: type === 'checkbox' ? checked : value,
         })
     }
 
@@ -73,7 +73,10 @@ const EditUser = () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(formData)
+                body: JSON.stringify({
+                    ...formData,
+                    head: formData.head === '' ? null : formData.head
+                })
             });
 
             if (res.ok) {
