@@ -10,7 +10,7 @@ const AdminUsers = () => {
         setFilteredUsers(users);
     }, [users]);
 
-    const filterUsers = (e) => {
+    const handleSearch = (e) => {
         const text = e.target.value.toLowerCase().trim();
 
         if (text === '') {
@@ -18,26 +18,27 @@ const AdminUsers = () => {
             return;
         }
 
-        const filtered = users.filter(user => {
-            return (
-                user.name?.toLowerCase().includes(text) ||
-                user.lastName?.toLowerCase().includes(text) ||
-                user.patronymic?.toLowerCase().includes(text) ||
-                user.login?.toLowerCase().includes(text)
-            )
-        });
-
-        setFilteredUsers(filtered);
+        if (users) {
+            const filtered = users.filter(user => {
+                return (
+                    user.name?.toLowerCase().includes(text) ||
+                    user.lastName?.toLowerCase().includes(text) ||
+                    user.patronymic?.toLowerCase().includes(text) ||
+                    user.login?.toLowerCase().includes(text)
+                )
+            });
+            setFilteredUsers(filtered);
+        }
     }
 
     return (
         <>
             <div className="admin-content-header">
                 <h1 className="content-header-title">Управление пользователями</h1>
-                <input className="content-header-search" placeholder="Поиск" onChange={filterUsers} />
+                <input className="content-header-search" placeholder="Поиск" onChange={handleSearch} />
             </div>
 
-            <table className="users-table">
+            <table className="admin-table users-table">
                 <thead>
                     <tr>
                         <td>id</td>

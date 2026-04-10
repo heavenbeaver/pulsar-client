@@ -5,7 +5,7 @@ const EditPage = () => {
         <>
             <Layout>
                 <div className="container">
-                    Страница настройки профиля
+                    Раздел находится в разработке
                 </div>
             </Layout>
         </>

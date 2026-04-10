@@ -5,38 +5,45 @@ import RegisterPage from "./pages/RegisterPage";
 import MainPage from "./pages/MainPage";
 import Loader from "./components/Loader";
 import ProtectedRoute from "./components/ProtectedRoute";
-import './App.css';
-import './media.css';
 import NotFoundPage from "./pages/NotFoundPage";
 import AdminPage from "./pages/AdminPage/AdminPage";
 import EditPage from "./pages/EditPage";
 import AdminUsers from "./pages/AdminPage/admin/AdminUsers";
-import AdminProjects from "./pages/AdminPage/admin/AdminProjects";
 import AdminTasks from "./pages/AdminPage/admin/AdminTasks";
 import AdminStat from "./pages/AdminPage/admin/AdminStat";
 import ForbiddenPage from "./pages/ForbiddenPage";
 import EditUser from "./pages/AdminPage/admin/EditUser";
+import './App.css';
+import './media.css';
+import ArchivePage from "./pages/ArchivePage";
+import TodoListPage from "./pages/TodoListPage";
 
 export const AppContext = createContext();
+export const token = localStorage.getItem('token');
 
-
+const getSystemTheme = () => {
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
 
 function App() {
   const [user, setUser] = useState(null);
   const [users, setUsers] = useState(null);
   const [subordinates, setSubordinates] = useState(null);
-  const [todos, setTodos] = useState(null);
+  const [todos, setTodos] = useState([]);
+  const [allTodos, setAllTodos] = useState([]);
   const [authLoading, setAuthLoading] = useState(true);
   const [editMode, setEditMode] = useState(null);
   const [selectedTodoId, setSelectedTodoId] = useState(null);
   const [todoData, setTodoData] = useState(null);
+  
   const [refetch, setRefetch] = useState(false);
   const [groupTodoList, setGroupTodoList] = useState(localStorage.getItem('groupTodoList') || 'Без группировок');
-  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark');
+
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem('theme') || getSystemTheme();
+  });
 
   const checkAuth = async () => {
-    const token = localStorage.getItem('token');
-
     if (!token) {
       setUser(null);
       setAuthLoading(false)
@@ -48,14 +55,16 @@ function App() {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`
-        },
+        }
       });
 
       if (res.ok) {
         const data = await res.json();
         setUser(data); // сохраняем пользователя в контексте
+      } else {
+        localStorage.removeItem('token');
+        setUser(null);
       }
-
     } catch (err) {
       console.error('Fetch /auth/me error:', err);
     } finally {
@@ -64,8 +73,9 @@ function App() {
   }
 
   useEffect(() => {
-    document.body.classList.toggle('dark', theme === 'dark')
-    document.body.classList.toggle('light', theme === 'light')
+    document.body.classList.toggle('dark', theme === 'dark');
+    document.body.classList.toggle('light', theme === 'light');
+    localStorage.setItem('theme', theme);
   }, [theme])
 
   const fetchUsers = useCallback(async () => {
@@ -78,9 +88,24 @@ function App() {
         const data = await res.json();
         setUsers(data);
       }
-    } catch (err) {
-      console.error(err)
+    } catch (error) {
+      console.error(error)
     };
+  }, []);
+
+  const fetchAllTodos = useCallback(async () => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/todos`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      const todoData = await response.json();
+      setAllTodos(todoData);
+    } catch (error) {
+      console.error(error);
+    }
   }, []);
 
   // Функция для получения ФИО по ID
@@ -104,6 +129,12 @@ function App() {
   }, [user, refetch]);
 
   useEffect(() => {
+    if (token) {
+      fetchAllTodos();
+    }
+  }, [refetch])
+
+  useEffect(() => {
     checkAuth();
   }, []);
 
@@ -115,24 +146,22 @@ function App() {
     )
   }
 
-  const contextValues = { user, setUser, todos, setTodos, users, setUsers, getUserFullName, editMode, setEditMode, selectedTodoId, setSelectedTodoId, todoData, setTodoData, groupTodoList, setGroupTodoList, subordinates, setSubordinates, refetch, setRefetch, theme, setTheme }
-
   return (
-    <AppContext.Provider value={contextValues}>
+    <AppContext.Provider value={{ user, setUser, todos, setTodos, allTodos, setAllTodos, users, setUsers, getUserFullName, editMode, setEditMode, selectedTodoId, setSelectedTodoId, todoData, setTodoData, groupTodoList, setGroupTodoList, subordinates, setSubordinates, refetch, setRefetch, theme, setTheme }}>
+
       <Router>
         <Routes>
-          <Route path="/" element={
-            <ProtectedRoute>
-              <MainPage />
-            </ProtectedRoute>}
-          />
+          <Route path="/" element={<ProtectedRoute><MainPage /></ProtectedRoute>}>
+            <Route index element={<TodoListPage />} />
+            <Route path="archive" element={<ArchivePage />} />
+          </Route>
+
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
 
           <Route path="/admin" element={<ProtectedRoute requiredRole="admin"><AdminPage /></ProtectedRoute>}>
             <Route path="users" element={<AdminUsers />} />
             <Route path="users/:id" element={<EditUser />} />
-            <Route path="projects" element={<AdminProjects />} />
             <Route path="tasks" element={<AdminTasks />} />
             <Route path="stat" element={<AdminStat />} />
 
@@ -146,6 +175,7 @@ function App() {
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Router>
+
     </AppContext.Provider>
   )
 }

@@ -12,7 +12,7 @@ const Modal = forwardRef(({ closeModal }, ref) => {
     const [title, setTitle] = useState('');
     const [desc, setDesc] = useState('');
     const [expireDate, setExpireDate] = useState('');
-    const [priority, setPriority] = useState('Высокий');
+    const [priority, setPriority] = useState('Низкий');
     const [responsible, setResponsible] = useState('');
     const [status, setStatus] = useState('');
     const [deleting, setDeleting] = useState(false);
@@ -135,7 +135,7 @@ const Modal = forwardRef(({ closeModal }, ref) => {
             setTitle('');
             setDesc('');
             setExpireDate('');
-            setPriority('Высокий');
+            setPriority('Низкий');
             setResponsible(user?.id || '');
             setStatus('К выполнению');
         }
@@ -176,6 +176,44 @@ const Modal = forwardRef(({ closeModal }, ref) => {
         } catch (error) {
             console.log(error)
         }
+    }
+
+    const handleComplete = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+
+        let newStatus = '';
+
+        if (todoData.status === 'К выполнению') {
+            newStatus = 'Выполняется';
+        } else if (todoData.status === 'Выполняется') {
+            newStatus = 'Выполнена';
+        } else {
+            newStatus = 'К выполнению';
+        }
+
+        try {
+            const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/todos/${todoData.id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                },
+                body: JSON.stringify({
+                    status: newStatus
+                })
+            });
+
+            if (!res.ok) {
+                console.log(res)
+            }
+            setLoading(false);
+            setRefetch(prev => !prev);
+            closeModal();
+        } catch (error) {
+            console.log(error)
+        }
+        
     }
 
     const canEditFields = () => {
@@ -256,6 +294,7 @@ const Modal = forwardRef(({ closeModal }, ref) => {
                         <>
                             <label htmlFor="date">Срок выполнения до:</label>
                             <input
+                                disabled={!canEdit}
                                 type="date"
                                 id="date"
                                 name="date"
@@ -270,6 +309,7 @@ const Modal = forwardRef(({ closeModal }, ref) => {
                         <>
                             <label htmlFor="date">Срок выполнения до:</label>
                             <Flatpickr
+                                disabled={!canEdit}
                                 id="date"
                                 name="date"
                                 value={expireDate}
@@ -285,25 +325,46 @@ const Modal = forwardRef(({ closeModal }, ref) => {
                         <option value="Средний">Средний</option>
                         <option value="Низкий">Низкий</option>
                     </select>
-                    <label htmlFor="responsible">Ответственный за выполнение:</label>
-                    <select disabled={!canEdit} name="responsible" id="responsible" value={responsible} onChange={(e) => setResponsible(e.target.value)}>
-                        <option value={user.id}>{getUserFullName(user.id)}</option>
-                        {users && users.filter(item => item.head == user.id).map(user => {
-                            return <option key={user.id} value={user.id}>{getUserFullName(user.id)}</option>
-                        })}
-                    </select>
-                    <label htmlFor="status">Статус:</label>
-                    <select name="status" id="status" value={status} onChange={(e) => setStatus(e.target.value)}>
-                        <option value='К выполнению'>К выполнению</option>
-                        <option value='Выполняется'>Выполняется</option>
-                        <option value='Выполнена'>Выполнена</option>
-                        <option value='Отменена'>Отменена</option>
-                    </select>
-                    <button className="btn btn-primary" disabled={loading}>{loading ? 'Сохранение' : 'Сохранить'}</button>
-                    {canEdit && <button className="btn btn-delete" disabled={deleting} onClick={handleDeleteTodo}>{deleting ? 'Удаление' : 'Удалить'}</button>}
+
+                    {canEdit && (
+                        <>
+                            <label htmlFor="responsible">Ответственный за выполнение:</label>
+                            <select disabled={!canEdit} name="responsible" id="responsible" value={responsible} onChange={(e) => setResponsible(e.target.value)}>
+                                <option value={user.id}>{getUserFullName(user.id)}</option>
+                                {users && users.filter(item => item.head == user.id).map(user => {
+                                    return <option key={user.id} value={user.id}>{getUserFullName(user.id)}</option>
+                                })}
+                            </select>
+                        </>
+                    )}
+
+                    {canEdit && (
+                        <>
+                            <label htmlFor="status">Статус:</label>
+                            <select name="status" id="status" value={status} onChange={(e) => setStatus(e.target.value)}>
+                                <option value='К выполнению'>К выполнению</option>
+                                <option value='Выполняется'>Выполняется</option>
+                                <option value='Выполнена'>Выполнена</option>
+                                <option value='Отменена'>Отменена</option>
+                            </select>
+                        </>
+                    )}
+
+                    {canEdit &&
+                        <button className="btn btn-primary" disabled={loading}>{loading ? 'Сохранение' : 'Сохранить'}</button>
+                    }
+                    {!canEdit &&
+                        <button className="btn btn-primary" disabled={loading} onClick={handleComplete}>{
+                            todoData && todoData.status === 'К выполнению' ? 'Начать выполнение' : 'Завершить задачу'
+                        }</button>
+                    }
+                    {canEdit &&
+                        <button className="btn btn-delete" disabled={deleting} onClick={handleDeleteTodo}>{deleting ? 'Удаление' : 'Удалить'}</button>
+                    }
                 </form>
             )
             }
+
             <CloseBtn closeModal={closeModal} theme={theme} />
         </div>
     );

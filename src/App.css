@@ -165,7 +165,7 @@ button {
 }
 
 .form-title {
-    font-size: 25px;
+    font-size: 20px;
     font-weight: 800;
     margin-bottom: 5px;
 }
@@ -456,18 +456,6 @@ button {
     align-items: center;
 }
 
-.switch-theme-btn {
-    display: block;
-    width: 45px;
-    height: 45px;
-    background-color: var(--surface);
-    outline: 1px solid var(--border);
-    border-radius: 50%;
-    cursor: pointer;
-    padding: 5px;
-    transition: .1s ease all;
-}
-
 .header-container {
     width: calc(1400px - 24px);
     margin-inline: auto;
@@ -549,30 +537,24 @@ button {
 
 /* USER */
 .user-pill {
+    position: relative;
     display: flex;
     align-items: center;
     gap: 10px;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 50px;
-    padding: 6px 14px 6px 6px;
+    padding: 7px 10px 7px 7px;
     cursor: pointer;
-    transition: border-color 0.2s;
-    position: relative;
+    user-select: none;
 }
 
 .avatar {
     width: 30px;
     height: 30px;
-    border-radius: 50%;
-    background-color: #7a82a0;
-    border: 1px solid var(--border);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 12px;
-    font-weight: 700;
-    color: #fff;
 }
 
 .user-name {
@@ -595,8 +577,8 @@ button {
 .notifications-btn>span {
     display: block;
     position: absolute;
-    width: 10px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
     background-color: var(--low);
     border-radius: 50%;
     top: 0;
@@ -606,12 +588,12 @@ button {
 .user__context {
     display: block;
     position: absolute;
+    width: 200px;
     background-color: var(--surface);
     box-shadow: var(--box-shadow);
-    min-width: 200px;
-    max-width: fit-content;
     border-radius: var(--radius-sm);
     top: 50px;
+    right: 0;
     overflow: hidden;
     border: 1px solid var(--border);
 }
@@ -627,6 +609,7 @@ button {
     align-items: center;
     gap: 10px;
     transition: .1s linear all;
+    flex-wrap: nowrap;
 }
 
 .context-item:hover {
@@ -644,6 +627,7 @@ button {
 
 .context-btn {
     display: flex;
+    flex-wrap: nowrap;
     align-items: center;
     font-size: 16px;
     gap: 10px;
@@ -778,11 +762,6 @@ button {
     cursor: pointer;
 }
 
-.group-title.collapsed span {
-    background-color: #18b894;
-    color: var(--text-primary);
-}
-
 .todo-wrapper {
     padding-bottom: 50px;
 }
@@ -818,7 +797,6 @@ button {
     break-inside: avoid;
     outline: 1px solid transparent;
     margin-bottom: 20px;
-    transition: .1s ease border-color;
 }
 
 .todo-card.expired {
@@ -828,10 +806,6 @@ button {
 
 .todo-card.expired .meta-item:nth-child(1) {
     color: var(--high);
-}
-
-.todo-card:hover {
-    border-color: var(--low);
 }
 
 .todo-card-header {
@@ -1104,7 +1078,7 @@ body.modal-open {
 
 .todo-form textarea:focus {
     outline: none;
-    border: 1px solid var(--accent);
+    border: 1px solid var(--low);
 }
 
 .title-green {
@@ -1285,4 +1259,74 @@ body.modal-open {
 * {
     scrollbar-width: thin;
     scrollbar-color: var(--scrollbar-color) transparent;
+}
+
+.archived-todo-counter {
+    padding: 10px 0;
+}
+
+.archived-todo-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.archived-todo-item {
+    background-color: var(--surface);
+    border-left: 3px solid #6c757d;
+    padding: 16px;
+    margin-bottom: 12px;
+    border-radius: 4px;
+    opacity: 0.85;
+}
+
+.archived-todo-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.todo-item__title {
+    color: var(--text-primary);
+}
+
+.todo-item__desc {
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+    font-size: 14px;
+}
+
+.archived-todo-meta {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.meta-item {
+    display: flex;
+    gap: 6px;
+}
+
+.meta-label {
+    font-weight: 500;
+}
+
+
+/* pagination */
+.pagination {
+    padding-top: 20px;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.pagination button {
+    background-color: var(--surface);
+    padding: 10px;
+    border-radius: var(--radius-sm);
 }

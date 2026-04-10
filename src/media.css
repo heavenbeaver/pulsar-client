@@ -41,15 +41,11 @@
     }
 
     .user-pill {
-        padding: 6.5px;
+        padding: 7px;
     }
 
     .user-name {
         display: none;
-    }
-
-    .user__context {
-        left: -200%;
     }
 
     .form-login {

@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState, useRef } from "react";
 import { AppContext } from "../App";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Outlet } from "react-router-dom";
 import Layout from "../components/Layout";
 import TodoList from "../components/TodoList";
 import TodoSort from "../components/TodoSort";
@@ -16,7 +16,7 @@ const scrollTop = () => {
 };
 
 const MainPage = () => {
-    const { setEditMode, setSelectedTodoId, setTodoData, theme, setTheme } = useContext(AppContext);
+    const { setEditMode, setSelectedTodoId, setTodoData, theme } = useContext(AppContext);
     const [showButton, setShowButton] = useState(false);
     const token = localStorage.getItem('token');
     const modal = useRef('');
@@ -28,7 +28,7 @@ const MainPage = () => {
             navigate('/login');
             return;
         }
-    }, [navigate, token]);
+    }, [token]);
 
     const openModal = (mode) => {
         setEditMode(mode)
@@ -63,21 +63,17 @@ const MainPage = () => {
         };
     }, [])
 
-
-
     return (
         <>
             <Layout>
                 <div className="container">
                     <TodoSort />
-                    <TodoList openModal={openModal} closeModal={closeModal} />
+                    <Outlet context={{openModal, closeModal}} />
                 </div>
-                <Modal ref={modal} closeModal={closeModal} />
 
                 <TodoCreateBtn theme={theme} openModal={openModal} setEditMode={setEditMode} />
-
                 <div ref={overlay} className="modal-overlay" onClick={closeModal}></div>
-
+                <Modal ref={modal} closeModal={closeModal} />
                 {showButton && <ScrollTopBtn theme={theme} scrollTop={scrollTop} />}
             </Layout>
         </>

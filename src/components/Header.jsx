@@ -4,9 +4,9 @@ import { useNavigate, Link } from "react-router-dom";
 import ExitIcon from "../icons/ExitIcon";
 import LogoIcon from "../icons/LogoIcon";
 import SettingsIcon from "../icons/SettingsIcon";
-import ThemeSwitchButton from "./ColorSchemeSwitch/ThemeSwitchButton";
 import AdminPanelIcon from "../icons/AdminPanelIcon";
-import NotificationsBtn from "./NotificationsBtn";
+import ThemeIcon from "../icons/ThemeIcon";
+import UserAvatar from "../icons/UserAvatar";
 const URL = import.meta.env.VITE_SERVER_URL;
 
 const Header = () => {
@@ -17,8 +17,6 @@ const Header = () => {
     const userTopRef = useRef(null);
 
     const navigate = useNavigate();
-
-    
 
     const handleLogout = async () => {
         setIsLoading(true)
@@ -36,7 +34,7 @@ const Header = () => {
                 localStorage.removeItem('theme');
                 setUser(null);
                 setTodos(null);
-                setTheme('dark');
+                setTheme(theme);
                 navigate('/login', { replace: true });
             }
         } catch (error) {
@@ -85,8 +83,6 @@ const Header = () => {
         }
     };
 
-    const avatarName = `${user.lastName ? user.lastName[0] : ''}${user.name ? user.name[0] : ''}`;
-
     return (
         <div className="header">
             <div className="header-container">
@@ -98,11 +94,10 @@ const Header = () => {
                         пульс<span>ар</span>
                     </div>
                 </Link>
-
                 <div className="header-right">
                     <div className="user-pill" onClick={toggleContext} ref={userTopRef}>
-                        <div className="avatar">{`${avatarName}`}</div>
-                        {user && <span className="user-name">{`${user.lastName} ${user.name} ${user.patronymic}`}</span>}
+                        <div className="avatar">{<UserAvatar />}</div>
+                        {user && <span className="user-name">{`${user.login}`}</span>}
 
                         {showContext && <div className="user__context" ref={contextRef}>
                             <ul className="context-list">
@@ -113,10 +108,16 @@ const Header = () => {
                                     </a>
                                 </li>}
                                 <li className="context-item">
-                                    <a href="/edit" className="context-btn">
+                                    <Link to="/edit" className="context-btn">
                                         <SettingsIcon />
                                         <span>Настройки профиля</span>
-                                    </a>
+                                    </Link>
+                                </li>
+                                <li className="context-item">
+                                    <button className="context-btn" onClick={() => switchTheme(theme)}>
+                                        <ThemeIcon />
+                                        <span>Тема: {theme === 'dark' ? 'Темная' : 'Светлая'}</span>
+                                    </button>
                                 </li>
                                 <li className="context-item">
                                     <button className="context-btn" disabled={isLoading} onClick={logout}>
@@ -127,10 +128,7 @@ const Header = () => {
                             </ul>
                         </div>}
                     </div>
-                    <NotificationsBtn />
-                    <ThemeSwitchButton theme={theme} switchTheme={() => switchTheme(theme)} />
                 </div>
-
             </div>
         </div>
     );

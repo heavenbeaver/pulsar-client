@@ -1,8 +1,9 @@
+import { Link } from "react-router-dom";
 import { AppContext } from "../App";
 import { useContext, useMemo } from "react";
 
 const TodoSort = () => {
-    const { groupTodoList, setGroupTodoList, todos } = useContext(AppContext);
+    const { groupTodoList, setGroupTodoList, todos, archivedTodos } = useContext(AppContext);
 
     function parseDate(dateStr) {
         const [day, month, year] = dateStr.split('.');
@@ -55,11 +56,13 @@ const TodoSort = () => {
                     <option value="По ответственным">По ответственным</option>
                 </select>
             </div>
-
             <div className="todo-counter">
-                <div className="counter__bage bage-all">
+                <Link to={'/'} className="counter__bage bage-all">
                     Всего: <span>{counts && counts.total}</span>
-                </div>
+                </Link>
+                <Link to={'/archive'} className="counter__bage bage-all">
+                    Архив
+                </Link>
                 <div className="counter__bage bage-expired">
                     Просрочено: <span>{counts && counts.expired}</span>
                 </div>
@@ -68,7 +71,6 @@ const TodoSort = () => {
                 </div>
             </div>
         </div>
-
     );
 }
 
