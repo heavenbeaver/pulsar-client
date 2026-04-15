@@ -9,3 +9,7 @@ Frontend для веб-приложения Пульсар на React JS
 
 ## Ссылка на проект
 https://todo-client-sigma-eight.vercel.app/
+
+## Credentials
+admin@pulsar.ru
+password
