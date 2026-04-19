@@ -1,6 +1,12 @@
-@import url(https://fonts.googleapis.com/css?family=Manrope:200,300,regular,500,600,700,800);
-@import url(https://fonts.googleapis.com/css?family=JetBrains+Mono:100,200,300,regular,500,600,700,800,100italic,200italic,300italic,italic,500italic,600italic,700italic,800italic);
+@font-face {
+    font-family: 'Manrope';
+    src: url('./fonts/Manrope-VariableFont_wght.ttf');
+}
 
+@font-face {
+    font-family: 'JetBrains Mono';
+    src: url('./fonts/JetBrainsMono-VariableFont_wght.ttf');
+}
 
 :root {
     --radius: 16px;
@@ -574,6 +580,7 @@ button {
     height: 45px;
     border: 1px solid var(--border);
 }
+
 .notifications-btn>span {
     display: block;
     position: absolute;
@@ -1047,6 +1054,7 @@ body.modal-open {
     padding: 5px;
     border: 1px solid transparent;
 }
+
 .btn-close:hover {
     background-color: var(--surface2);
     border-color: var(--border);
@@ -1325,8 +1333,207 @@ body.modal-open {
     gap: 20px;
 }
 
-.pagination button {
+.pagination-btn {
     background-color: var(--surface);
     padding: 10px;
     border-radius: var(--radius-sm);
+    border: 1px solid transparent;
+}
+.pagination-btn:hover {
+    border-color: var(--border);
+}
+
+.admin-wrapper {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 20px;
+}
+
+.admin-aside {
+    background-color: var(--surface);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    height: fit-content;
+    min-width: 300px;
+    position: sticky;
+    top: 100px;
+    overflow: hidden;
+}
+
+.admin-items {
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-item:hover {
+    background-color: var(--surface2);
+}
+
+.admin-item-btn {
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+}
+
+.admin-item-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+.admin-item-btn span {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.admin-item-btn:hover {
+    color: #18b894;
+}
+
+.admin-item-btn.active {
+    color: #18b894;
+}
+
+
+.admin-content {
+    background-color: var(--surface);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    padding: 20px;
+    height: fit-content;
+}
+
+.content-header-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.content-header-search {
+    margin-bottom: 20px;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-table thead {
+    background-color: var(--surface2);
+}
+
+.admin-table td {
+    padding: 10px;
+    border: 1px solid var(--border);
+    font-size: 13px;
+}
+
+.admin-table a {
+    font-size: 13px;
+    color: var(--text-primary);
+}
+
+.admin-table a:hover {
+    color: var(--low);
+}
+
+.search-error {
+    text-align: center;
+}
+
+.back-link {
+    display: flex;
+    align-items: center;
+    color: var(--text-primary);
+    transition: .3s ease color;
+    width: fit-content;
+}
+
+.back-link:hover {
+    color: var(--low);
+}
+
+.user-edit-form {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.action-btns {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Контейнер свитча */
+.switch-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+}
+
+/* Скрываем стандартный чекбокс */
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* Слайдер */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--border);
+    transition: 0.4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    display: block;
+    aspect-ratio: 1;
+    width: 16px;
+    height: 16px;
+    box-shadow: 0 0 1px 0 rgb(84, 84, 84);
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+}
+
+/* Активное состояние */
+input:checked+.slider {
+    background-color: var(--low);
+}
+
+input:disabled+.slider {
+    background-color: #0e725c;
+}
+
+input:checked+.slider:before {
+    transform: translateX(20px);
+}
+
+/* Опционально: фокус для accessibility */
+input:focus+.slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+.success-message {
+    text-align: center;
+    color: var(--low);
 }

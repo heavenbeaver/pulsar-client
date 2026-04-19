@@ -1,4 +1,3 @@
-import './style.css';
 import Layout from "../../components/Layout";
 import AdminPanelIcon from '../../icons/AdminPanelIcon';
 import UsersIcon from '../../icons/UsersIcon';
@@ -14,39 +13,26 @@ const AdminPage = () => {
                             <ul className="admin-items">
                                 <li className="admin-item">
                                     <NavLink to="users" className='admin-item-btn'>
-                                        <UsersIcon/>
+                                        <UsersIcon />
                                         <span>Управление пользователями</span>
                                     </NavLink>
                                 </li>
-                                {/* <li className="admin-item">
-                                    <NavLink to="projects" className='admin-item-btn'>
-                                        <AdminPanelIcon/>
-                                        <span>Управление проектами</span>
-                                    </NavLink>
-                                </li> */}
                                 <li className="admin-item">
                                     <NavLink to="tasks" className='admin-item-btn'>
-                                        <AdminPanelIcon/>
+                                        <AdminPanelIcon />
                                         <span>Управление задачами</span>
                                     </NavLink >
                                 </li>
-                                {/* <li className="admin-item">
-                                    <NavLink to="/admin/users" className='admin-item-btn'>
-                                        <AdminPanelIcon/>
-                                        <span>Категории</span>
-                                    </NavLink >
-                                </li> */}
                                 <li className="admin-item">
                                     <NavLink to="stat" className='admin-item-btn'>
-                                        <AdminPanelIcon/>
+                                        <AdminPanelIcon />
                                         <span>Статистика и аналитика</span>
                                     </NavLink >
                                 </li>
                             </ul>
                         </aside>
-
                         <div className="admin-content">
-                            <Outlet/>
+                            <Outlet />
                         </div>
                     </div>
                 </div>
