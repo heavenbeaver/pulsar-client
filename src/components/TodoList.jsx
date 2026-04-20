@@ -1,6 +1,6 @@
 import TodoCard from "./TodoCard";
 import { AppContext } from "../App";
-import { useContext, useEffect, useMemo, useCallback } from "react";
+import { useContext, useEffect, useMemo, useCallback, useState } from "react";
 
 const parseDate = (dateStr) => {
     if (!dateStr) return null;
@@ -58,10 +58,11 @@ const groupByExpireDate = (todos) => {
 
 const TodoList = ({ openModal }) => {
     const { todos, setTodos, user, groupTodoList, getUserFullName, subordinates, setSubordinates, refetch, authLoading } = useContext(AppContext);
+    const [isTodosLoading, setIsTodosLoading] = useState(true);
 
     useEffect(() => {
         if (!user && !authLoading) return;
-    }, [])
+    }, [user, authLoading])
 
     const groupByResponsible = useCallback((todos) => {
         const groups = {};
@@ -104,9 +105,15 @@ const TodoList = ({ openModal }) => {
     }, [user?.id]);
 
     useEffect(() => {
-        if (!user?.id) return;
+        if (!user?.id) {
+            if (!authLoading) {
+                setIsTodosLoading(false);
+            }
+            return;
+        }
 
         const fetchTodos = async () => {
+            setIsTodosLoading(true);
             try {
                 const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/todos?userId=${user.id}`, {
                     headers: {
@@ -119,11 +126,13 @@ const TodoList = ({ openModal }) => {
                 setTodos(data);
             } catch (err) {
                 if (err.name !== 'AbortError') console.error(err);
+            } finally {
+                setIsTodosLoading(false);
             }
         };
 
         fetchTodos();
-    }, [user?.id, refetch]);
+    }, [user?.id, refetch, authLoading, setTodos]);
 
     const grouped = useMemo(() => {
         if (!todos) return null;
@@ -153,7 +162,9 @@ const TodoList = ({ openModal }) => {
 
     return (
         <div className="todo-wrapper">
-            {!grouped ? (
+            {isTodosLoading ? (
+                <p className="empty-message">Загрузка...</p>
+            ) : !grouped ? (
                 <p className="empty-message">Загрузка...</p>
             ) : Object.keys(grouped).length === 0 ? (
                 <p className="empty-message">Список задач пуст</p>
