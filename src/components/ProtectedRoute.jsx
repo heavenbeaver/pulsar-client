@@ -1,15 +1,16 @@
 import { useContext } from "react";
 import { Navigate } from "react-router-dom";
+// import { AuthContext } from "../context/AuthProvider";
 import { AppContext } from "../App";
 
 const ProtectedRoute = ({children, requiredRole = 'user'}) => {
-    const { user } = useContext(AppContext);
+    const { user, authLoading } = useContext(AppContext);
 
-    if (!user) {
+    if (!user && authLoading) {
         return <Navigate to='/login' replace />
     }
 
-    if (requiredRole === 'admin' && !user.isAdmin) {
+    if (requiredRole === 'admin' && !user?.isAdmin && authLoading) {
         return <Navigate to='/403' replace />
     }
 

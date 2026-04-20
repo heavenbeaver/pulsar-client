@@ -1,10 +1,11 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { createContext, useCallback, useEffect, useState } from "react";
+
+import Loader from "./components/Loader";
+import ProtectedRoute from "./components/ProtectedRoute";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import MainPage from "./pages/MainPage";
-import Loader from "./components/Loader";
-import ProtectedRoute from "./components/ProtectedRoute";
 import NotFoundPage from "./pages/NotFoundPage";
 import AdminPage from "./pages/AdminPage/AdminPage";
 import EditPage from "./pages/EditPage";
@@ -13,13 +14,13 @@ import AdminTasks from "./pages/AdminPage/admin/AdminTasks";
 import AdminStat from "./pages/AdminPage/admin/AdminStat";
 import ForbiddenPage from "./pages/ForbiddenPage";
 import EditUser from "./pages/AdminPage/admin/EditUser";
-import './App.css';
-import './media.css';
 import ArchivePage from "./pages/ArchivePage";
 import TodoListPage from "./pages/TodoListPage";
 
+import './App.css';
+import './media.css';
+
 export const AppContext = createContext();
-export const token = localStorage.getItem('token');
 
 const getSystemTheme = () => {
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
@@ -31,46 +32,41 @@ function App() {
   const [subordinates, setSubordinates] = useState(null);
   const [todos, setTodos] = useState([]);
   const [allTodos, setAllTodos] = useState([]);
-  const [authLoading, setAuthLoading] = useState(true);
+  const [authLoading, setAuthLoading] = useState(false);
   const [editMode, setEditMode] = useState(null);
   const [selectedTodoId, setSelectedTodoId] = useState(null);
   const [todoData, setTodoData] = useState(null);
-  
   const [refetch, setRefetch] = useState(false);
   const [groupTodoList, setGroupTodoList] = useState(localStorage.getItem('groupTodoList') || 'Без группировок');
-
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem('theme') || getSystemTheme();
   });
 
   const checkAuth = async () => {
-    if (!token) {
-      setUser(null);
-      setAuthLoading(false)
-      return;
-    }
-
+    setAuthLoading(true);
     try {
       const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/auth/me`, {
         method: 'GET',
         headers: {
-          'Authorization': `Bearer ${token}`
-        }
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include'
       });
 
       if (res.ok) {
-        const data = await res.json();
-        setUser(data); // сохраняем пользователя в контексте
-      } else {
-        localStorage.removeItem('token');
-        setUser(null);
+        const userData = await res.json();
+        setUser(userData); // сохраняем пользователя в контексте
       }
-    } catch (err) {
-      console.error('Fetch /auth/me error:', err);
+    } catch (error) {
+      console.error('Fetch /auth/me error:', error);
     } finally {
       setAuthLoading(false);
     }
   }
+
+  useEffect(() => {
+    checkAuth();
+  }, []);
 
   useEffect(() => {
     document.body.classList.toggle('dark', theme === 'dark');
@@ -81,7 +77,8 @@ function App() {
   const fetchUsers = useCallback(async () => {
     try {
       const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/users`, {
-        method: 'GET'
+        method: 'GET',
+        credentials: 'include'
       });
 
       if (res.ok) {
@@ -97,8 +94,9 @@ function App() {
     try {
       const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/todos`, {
         method: 'GET',
+        credentials: 'include',
         headers: {
-          'Authorization': `Bearer ${token}`
+          'Content-Type': 'appication/json'
         }
       });
       const todoData = await response.json();
@@ -129,14 +127,10 @@ function App() {
   }, [user, refetch]);
 
   useEffect(() => {
-    if (token) {
+    if (user) {
       fetchAllTodos();
     }
-  }, [refetch])
-
-  useEffect(() => {
-    checkAuth();
-  }, []);
+  }, [user, refetch])
 
   if (authLoading) {
     return (

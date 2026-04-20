@@ -39,8 +39,8 @@ const Modal = forwardRef(({ closeModal }, ref) => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
                 },
+                credentials: 'include',
                 body: JSON.stringify(formData)
             });
 
@@ -68,9 +68,7 @@ const Modal = forwardRef(({ closeModal }, ref) => {
         try {
             const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/todos/${selectedTodoId}`, {
                 method: 'DELETE',
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                }
+                credentials: 'include'
             });
 
             if (!res.ok) {
@@ -96,9 +94,7 @@ const Modal = forwardRef(({ closeModal }, ref) => {
             try {
                 const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/todos/${selectedTodoId}`, {
                     method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
-                    }
+                    credentials: 'include'
                 });
 
                 if (!res.ok) {
@@ -162,8 +158,8 @@ const Modal = forwardRef(({ closeModal }, ref) => {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
                 },
+                credentials: 'include',
                 body: JSON.stringify(formData)
             });
 
@@ -197,8 +193,8 @@ const Modal = forwardRef(({ closeModal }, ref) => {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
                 },
+                credentials: 'include',
                 body: JSON.stringify({
                     status: newStatus
                 })

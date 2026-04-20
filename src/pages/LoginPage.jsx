@@ -30,13 +30,12 @@ const LoginPage = () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
+                credentials: 'include',
                 body: JSON.stringify({
                     login,
                     password
                 })
             })
-
-            const data = await res.json();
 
             if (!res.ok) {
                 setIsLoading(false);
@@ -44,7 +43,8 @@ const LoginPage = () => {
                 return;
             }
 
-            if (data.token) localStorage.setItem('token', data.token);
+            const data = await res.json();
+
             if (data) setUser({
                 id: data.id,
                 login: data.login,
@@ -53,15 +53,17 @@ const LoginPage = () => {
                 patronymic: data.patronymic,
                 isAdmin: data.isAdmin
             })
-            setIsLoading(false);
+
             navigate('/');
         } catch (error) {
-            setIsLoading(false);
+            console.error(error);
             if (error.message == 'Failed to fetch') {
                 setError('Сервер недоступен. Попробуйте позже.');
             } else {
                 setError('Произошла неизвестная ошибка.Попробуйте снова.');
             }
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -72,7 +74,6 @@ const LoginPage = () => {
     return (
         <>
             <AuthBg />
-
             <div className="screen">
                 <div className="left">
                     <div className="logo">
@@ -91,26 +92,26 @@ const LoginPage = () => {
                         </div>
                     </div>
                     <div className="waveform">
-                        <div className="wave-bar" style={{height:'40%'}}></div>
-                        <div className="wave-bar" style={{height:'70%'}}></div>
-                        <div className="wave-bar" style={{height:'55%'}}></div>
-                        <div className="wave-bar" style={{height:'90%'}}></div>
-                        <div className="wave-bar" style={{height:'65%'}}></div>
-                        <div className="wave-bar" style={{height:'45%'}}></div>
-                        <div className="wave-bar" style={{height:'80%'}}></div>
-                        <div className="wave-bar" style={{height:'60%'}}></div>
-                        <div className="wave-bar" style={{height:'75%'}}></div>
-                        <div className="wave-bar" style={{height:'50%'}}></div>
-                        <div className="wave-bar" style={{height:'35%'}}></div>
-                        <div className="wave-bar" style={{height:'85%'}}></div>
-                        <div className="wave-bar" style={{height:'55%'}}></div>
-                        <div className="wave-bar" style={{height:'70%'}}></div>
-                        <div className="wave-bar" style={{height:'40%'}}></div>
-                        <div className="wave-bar" style={{height:'95%'}}></div>
-                        <div className="wave-bar" style={{height:'60%'}}></div>
-                        <div className="wave-bar" style={{height:'45%'}}></div>
-                        <div className="wave-bar" style={{height:'80%'}}></div>
-                        <div className="wave-bar" style={{height:'65%'}}></div>
+                        <div className="wave-bar" style={{ height: '40%' }}></div>
+                        <div className="wave-bar" style={{ height: '70%' }}></div>
+                        <div className="wave-bar" style={{ height: '55%' }}></div>
+                        <div className="wave-bar" style={{ height: '90%' }}></div>
+                        <div className="wave-bar" style={{ height: '65%' }}></div>
+                        <div className="wave-bar" style={{ height: '45%' }}></div>
+                        <div className="wave-bar" style={{ height: '80%' }}></div>
+                        <div className="wave-bar" style={{ height: '60%' }}></div>
+                        <div className="wave-bar" style={{ height: '75%' }}></div>
+                        <div className="wave-bar" style={{ height: '50%' }}></div>
+                        <div className="wave-bar" style={{ height: '35%' }}></div>
+                        <div className="wave-bar" style={{ height: '85%' }}></div>
+                        <div className="wave-bar" style={{ height: '55%' }}></div>
+                        <div className="wave-bar" style={{ height: '70%' }}></div>
+                        <div className="wave-bar" style={{ height: '40%' }}></div>
+                        <div className="wave-bar" style={{ height: '95%' }}></div>
+                        <div className="wave-bar" style={{ height: '60%' }}></div>
+                        <div className="wave-bar" style={{ height: '45%' }}></div>
+                        <div className="wave-bar" style={{ height: '80%' }}></div>
+                        <div className="wave-bar" style={{ height: '65%' }}></div>
                     </div>
                 </div>
 

@@ -22,7 +22,8 @@ const Header = () => {
         setIsLoading(true)
         try {
             const res = await fetch(`${URL}/auth/logout`, {
-                method: 'POST'
+                method: 'POST',
+                credentials: 'include'
             });
 
             if (!res.ok) {
@@ -30,7 +31,6 @@ const Header = () => {
             }
 
             if (res.status == 204) {
-                localStorage.removeItem('token');
                 localStorage.removeItem('theme');
                 setUser(null);
                 setTodos(null);

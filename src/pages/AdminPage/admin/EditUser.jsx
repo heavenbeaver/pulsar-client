@@ -73,6 +73,7 @@ const EditUser = () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
+                credentials: 'include',
                 body: JSON.stringify({
                     ...formData,
                     head: formData.head === '' ? null : formData.head

@@ -44,6 +44,7 @@ const RegisterPage = () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
+                credentials: 'include',
                 body: JSON.stringify({
                     name,
                     lastName,
@@ -54,17 +55,16 @@ const RegisterPage = () => {
                     isAdmin: false
                 })
             });
-
-            const data = await res.json();
-
+            
             if (!res.ok) {
                 setIsLoading(false);
                 console.error(res.error)
                 return;
             }
 
+            const data = await res.json();
+            
             if (data) {
-                localStorage.setItem('token', data.token);
                 setUser({
                     id: data.id,
                     login: data.login,

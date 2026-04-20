@@ -15,8 +15,8 @@ const ArchivePage = () => {
             const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/todos/archived?userId=${user.id}&page=${page}`, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                }
+                },
+                credentials: 'include'
             });
             const result = await res.json();
 

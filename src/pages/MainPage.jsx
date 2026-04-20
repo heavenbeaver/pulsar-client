@@ -18,17 +18,9 @@ const scrollTop = () => {
 const MainPage = () => {
     const { setEditMode, setSelectedTodoId, setTodoData, theme } = useContext(AppContext);
     const [showButton, setShowButton] = useState(false);
-    const token = localStorage.getItem('token');
     const modal = useRef('');
     const overlay = useRef('');
     const navigate = useNavigate();
-
-    useEffect(() => {
-        if (!token) {
-            navigate('/login');
-            return;
-        }
-    }, [token]);
 
     const openModal = (mode) => {
         setEditMode(mode)

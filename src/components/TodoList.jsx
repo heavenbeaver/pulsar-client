@@ -57,7 +57,11 @@ const groupByExpireDate = (todos) => {
 
 
 const TodoList = ({ openModal }) => {
-    const { todos, setTodos, user, groupTodoList, getUserFullName, subordinates, setSubordinates, refetch } = useContext(AppContext);
+    const { todos, setTodos, user, groupTodoList, getUserFullName, subordinates, setSubordinates, refetch, authLoading } = useContext(AppContext);
+
+    useEffect(() => {
+        if (!user && !authLoading) return;
+    }, [])
 
     const groupByResponsible = useCallback((todos) => {
         const groups = {};
@@ -68,7 +72,7 @@ const TodoList = ({ openModal }) => {
         };
 
         if (subordinates) subordinates.forEach(sub => addPerson(sub.id));
-        addPerson(user.id);
+        addPerson(user?.id);
         todos.forEach(todo => addPerson(todo.responsible));
         todos.forEach(todo => {
             const key = getUserFullName(todo.responsible);
@@ -78,15 +82,15 @@ const TodoList = ({ openModal }) => {
         return Object.keys(groups)
             .sort((a, b) => a.localeCompare(b, 'ru'))
             .reduce((acc, key) => ({ ...acc, [key]: groups[key] }), {});
-    }, [subordinates, getUserFullName, user.id]);
+    }, [subordinates, getUserFullName, user?.id]);
 
     useEffect(() => {
-        if (!user.id) return;
+        if (!user?.id) return;
 
         const fetchSubordinates = async () => {
             try {
                 const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/users?managerId=${user.id}`, {
-                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                    credentials: 'include'
                 });
                 if (!res.ok) throw new Error('Ошибка загрузки подчиненных')
                 const data = await res.json();
@@ -97,21 +101,18 @@ const TodoList = ({ openModal }) => {
         };
 
         fetchSubordinates();
-    }, [user.id]);
+    }, [user?.id]);
 
     useEffect(() => {
-        if (!user.id) return;
-
-        const abortController = new AbortController();
+        if (!user?.id) return;
 
         const fetchTodos = async () => {
             try {
                 const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/todos?userId=${user.id}`, {
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
                     },
-                    signal: abortController.signal
+                    credentials: 'include',
                 });
                 if (!res.ok) throw new Error('Ошибка при получении задач');
                 const data = await res.json();
@@ -122,9 +123,7 @@ const TodoList = ({ openModal }) => {
         };
 
         fetchTodos();
-        return () => abortController.abort();
-
-    }, [user.id, refetch]);
+    }, [user?.id, refetch]);
 
     const grouped = useMemo(() => {
         if (!todos) return null;
