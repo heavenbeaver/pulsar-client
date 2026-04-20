@@ -9,7 +9,6 @@ const LoginPage = () => {
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
-    const URL = import.meta.env.VITE_SERVER_URL;
     const navigate = useNavigate();
     const { user, setUser } = useContext(AppContext);
     const [isHidePass, setIsHidePass] = useState(true);
@@ -25,7 +24,7 @@ const LoginPage = () => {
         setIsLoading(true);
         setError(null);
         try {
-            const res = await fetch(`${URL}/auth/login`, {
+            const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/auth/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
