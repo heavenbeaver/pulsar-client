@@ -284,7 +284,7 @@ const Modal = forwardRef(({ closeModal }, ref) => {
             ) : (
                 <form className="todo-form" onSubmit={handleEditSubmit}>
                     <h2 className="form-title">Редактирование</h2>
-                    <input disabled={!canEdit} type="text" name="title" id="title" value={title} placeholder="Название" onChange={(e) => setTitle(e.target.value)} />
+                    <textarea disabled={!canEdit} type="text" name="title" id="title" value={title} placeholder="Название" onChange={(e) => setTitle(e.target.value)}></textarea>
                     <textarea disabled={!canEdit} placeholder="Описание задачи" name="desc" id="desc" value={desc} onChange={(e) => setDesc(e.target.value)}></textarea>
                     {isMobile ? (
                         <>

@@ -670,12 +670,20 @@ button {
 
 .todo-sort {
     position: relative;
+    flex-wrap: wrap;
+    display: flex;
+    gap: 20px;
 }
 
-.todo-sort::after {
+.todo-sort-select {
+    position: relative;
+}
+
+.todo-sort-select::after {
     content: '▾';
+    display: block;
     position: absolute;
-    right: 12px;
+    right: 10px;
     top: 50%;
     transform: translateY(-50%);
     color: var(--text-secondary);
@@ -1069,6 +1077,11 @@ body.modal-open {
     display: flex;
     flex-direction: column;
     gap: 20px;
+}
+
+.todo-form textarea[name="title"] {
+    min-height: fit-content;
+    resize: none;
 }
 
 .todo-form .form-title {

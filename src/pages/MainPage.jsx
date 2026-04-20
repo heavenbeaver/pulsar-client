@@ -1,8 +1,7 @@
 import { useContext, useEffect, useState, useRef } from "react";
 import { AppContext } from "../App";
-import { useNavigate, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import Layout from "../components/Layout";
-import TodoList from "../components/TodoList";
 import TodoSort from "../components/TodoSort";
 import TodoCreateBtn from "../components/TodoCreateBtn";
 import Modal from "../components/Modal/Modal";
@@ -20,7 +19,6 @@ const MainPage = () => {
     const [showButton, setShowButton] = useState(false);
     const modal = useRef('');
     const overlay = useRef('');
-    const navigate = useNavigate();
 
     const openModal = (mode) => {
         setEditMode(mode)
@@ -59,7 +57,7 @@ const MainPage = () => {
         <>
             <Layout>
                 <div className="container">
-                    <TodoSort />
+                    <TodoSort openModal={openModal} setEditMode={setEditMode} />
                     <Outlet context={{openModal, closeModal}} />
                 </div>
 
