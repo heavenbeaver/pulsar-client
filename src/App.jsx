@@ -141,7 +141,7 @@ function App() {
   }
 
   return (
-    <AppContext.Provider value={{ user, setUser, todos, setTodos, allTodos, setAllTodos, users, setUsers, getUserFullName, editMode, setEditMode, selectedTodoId, setSelectedTodoId, todoData, setTodoData, groupTodoList, setGroupTodoList, subordinates, setSubordinates, refetch, setRefetch, theme, setTheme }}>
+    <AppContext.Provider value={{ user, setUser, authLoading, todos, setTodos, allTodos, setAllTodos, users, setUsers, getUserFullName, editMode, setEditMode, selectedTodoId, setSelectedTodoId, todoData, setTodoData, groupTodoList, setGroupTodoList, subordinates, setSubordinates, refetch, setRefetch, theme, setTheme }}>
 
       <Router>
         <Routes>
