@@ -42,29 +42,29 @@ function App() {
     return localStorage.getItem('theme') || getSystemTheme();
   });
 
-  const checkAuth = async () => {
-    setAuthLoading(true);
-    try {
-      const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/auth/me`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        credentials: 'include'
-      });
-
-      if (res.ok) {
-        const userData = await res.json();
-        setUser(userData); // сохраняем пользователя в контексте
-      }
-    } catch (error) {
-      console.error('Fetch /auth/me error:', error);
-    } finally {
-      setAuthLoading(false);
-    }
-  }
-
   useEffect(() => {
+    const checkAuth = async () => {
+      setAuthLoading(true);
+      try {
+        const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/auth/me`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          credentials: 'include'
+        });
+
+        if (res.ok) {
+          const userData = await res.json();
+          setUser(userData); // сохраняем пользователя в контексте
+        }
+      } catch (error) {
+        console.error('Fetch /auth/me error:', error);
+      } finally {
+        setAuthLoading(false);
+      }
+    }
+    
     checkAuth();
   }, []);
 
@@ -96,7 +96,7 @@ function App() {
         method: 'GET',
         credentials: 'include',
         headers: {
-          'Content-Type': 'appication/json'
+          'Content-Type': 'application/json'
         }
       });
       const todoData = await response.json();

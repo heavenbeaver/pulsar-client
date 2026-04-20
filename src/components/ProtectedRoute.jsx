@@ -6,17 +6,19 @@ import { AppContext } from "../App";
 const ProtectedRoute = ({ children, requiredRole = 'user' }) => {
     const { user, authLoading } = useContext(AppContext);
 
-    if (!authLoading) {
-        if (!user) {
-            return <Navigate to='/login' replace />
-        }
-
-        if (requiredRole === 'admin' && !user?.isAdmin && authLoading) {
-            return <Navigate to='/403' replace />
-        }
-
-        return children;
+    if (authLoading) {
+        return null;
     }
+
+    if (!user) {
+        return <Navigate to='/login' replace />
+    }
+
+    if (requiredRole === 'admin' && !user?.isAdmin) {
+        return <Navigate to='/403' replace />
+    }
+
+    return children;
 };
 
 export default ProtectedRoute;

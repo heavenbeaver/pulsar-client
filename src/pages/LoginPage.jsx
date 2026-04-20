@@ -38,8 +38,8 @@ const LoginPage = () => {
             })
 
             if (!res.ok) {
-                setIsLoading(false);
-                setError(data.error);
+                const errorData = await res.json().catch(() => null);
+                setError(errorData?.error || 'Не удалось выполнить вход. Проверьте логин и пароль.');
                 return;
             }
 
