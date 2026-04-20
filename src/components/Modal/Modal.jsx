@@ -35,7 +35,7 @@ const Modal = forwardRef(({ closeModal }, ref) => {
         }
 
         try {
-            const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/todos`, {
+            const res = await fetch(`/api/todos`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -66,7 +66,7 @@ const Modal = forwardRef(({ closeModal }, ref) => {
         e.preventDefault();
         setDeleting(true);
         try {
-            const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/todos/${selectedTodoId}`, {
+            const res = await fetch(`/api/todos/${selectedTodoId}`, {
                 method: 'DELETE',
                 credentials: 'include'
             });
@@ -92,7 +92,7 @@ const Modal = forwardRef(({ closeModal }, ref) => {
         const fetchTodoData = async () => {
             setLoadingTodo(true);
             try {
-                const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/todos/${selectedTodoId}`, {
+                const res = await fetch(`/api/todos/${selectedTodoId}`, {
                     method: 'GET',
                     credentials: 'include'
                 });
@@ -154,7 +154,7 @@ const Modal = forwardRef(({ closeModal }, ref) => {
         }
 
         try {
-            const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/todos/${todoData.id}`, {
+            const res = await fetch(`/api/todos/${todoData.id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -189,7 +189,7 @@ const Modal = forwardRef(({ closeModal }, ref) => {
         }
 
         try {
-            const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/todos/${todoData.id}`, {
+            const res = await fetch(`/api/todos/${todoData.id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

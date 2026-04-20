@@ -3,7 +3,7 @@ import { AppContext } from "../App";
 import { useContext, useMemo } from "react";
 
 const TodoSort = () => {
-    const { groupTodoList, setGroupTodoList, todos, archivedTodos } = useContext(AppContext);
+    const { groupTodoList, setGroupTodoList, todos } = useContext(AppContext);
 
     function parseDate(dateStr) {
         const [day, month, year] = dateStr.split('.');
