@@ -47,7 +47,7 @@ function App() {
     const checkAuth = async () => {
       setAuthLoading(true);
       try {
-        const res = await fetch(`/api/auth/me`, {
+        const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/auth/me`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json'
@@ -93,7 +93,7 @@ function App() {
 
   const fetchAllTodos = useCallback(async () => {
     try {
-      const response = await fetch(`/api/todos`, {
+      const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/todos`, {
         method: 'GET',
         credentials: 'include',
         headers: {

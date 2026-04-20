@@ -12,7 +12,7 @@ const ArchivePage = () => {
     const fetchArchivedTodos = async () => {
         setIsLoading(true);
         try {
-            const res = await fetch(`/api/todos/archived?userId=${user.id}&page=${page}`, {
+            const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/todos/archived?userId=${user.id}&page=${page}`, {
                 headers: {
                     'Content-Type': 'application/json',
                 },

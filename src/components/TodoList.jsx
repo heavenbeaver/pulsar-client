@@ -90,7 +90,7 @@ const TodoList = ({ openModal }) => {
 
         const fetchSubordinates = async () => {
             try {
-                const res = await fetch(`/api/users?managerId=${user.id}`, {
+                const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/users?managerId=${user.id}`, {
                     credentials: 'include'
                 });
                 if (!res.ok) throw new Error('Ошибка загрузки подчиненных')
@@ -115,7 +115,7 @@ const TodoList = ({ openModal }) => {
         const fetchTodos = async () => {
             setIsTodosLoading(true);
             try {
-                const res = await fetch(`/api/todos?userId=${user.id}`, {
+                const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/todos?userId=${user.id}`, {
                     headers: {
                         'Content-Type': 'application/json',
                     },
