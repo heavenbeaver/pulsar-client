@@ -142,6 +142,7 @@ const LoginPage = () => {
                                 value={login}
                                 onChange={(e) => setLogin(e.target.value)}
                                 placeholder="user@company.ru"
+                                autoComplete="login"
                                 required />
 
                             <label htmlFor="password">Пароль</label>
