@@ -32,7 +32,8 @@ function App() {
   const [subordinates, setSubordinates] = useState(null);
   const [todos, setTodos] = useState([]);
   const [allTodos, setAllTodos] = useState([]);
-  const [authLoading, setAuthLoading] = useState(false);
+  // Start in loading state so route guards wait for /auth/me on first app render.
+  const [authLoading, setAuthLoading] = useState(true);
   const [editMode, setEditMode] = useState(null);
   const [selectedTodoId, setSelectedTodoId] = useState(null);
   const [todoData, setTodoData] = useState(null);

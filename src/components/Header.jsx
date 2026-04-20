@@ -102,10 +102,10 @@ const Header = () => {
                         {showContext && <div className="user__context" ref={contextRef}>
                             <ul className="context-list">
                                 {user.isAdmin && <li className="context-item">
-                                    <a href="/admin" className="context-btn">
+                                    <Link to="/admin" className="context-btn">
                                         <AdminPanelIcon />
                                         <span>Администрирование</span>
-                                    </a>
+                                    </Link>
                                 </li>}
                                 <li className="context-item">
                                     <Link to="/edit" className="context-btn">
