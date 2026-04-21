@@ -103,7 +103,7 @@ const TodoList = ({ openModal }) => {
 
         fetchSubordinates();
     }, [user?.id]);
-
+    
     useEffect(() => {
         if (!user?.id) {
             if (!authLoading) {
@@ -111,7 +111,6 @@ const TodoList = ({ openModal }) => {
             }
             return;
         }
-
         const fetchTodos = async () => {
             setIsTodosLoading(true);
             try {

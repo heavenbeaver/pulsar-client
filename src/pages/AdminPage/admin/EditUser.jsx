@@ -17,7 +17,7 @@ const EditUser = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [formData, setFormData] = useState(defaultFormData);
-    const { user, users, getUserFullName, refetch, setRefetch } = useContext(AppContext);
+    const { user, users, getUserFullName, setRefetch } = useContext(AppContext);
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [isSaving, setSaving] = useState(false);

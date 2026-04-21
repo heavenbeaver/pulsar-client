@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { createContext, useCallback, useEffect, useState } from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import Loader from "./components/Loader";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -21,6 +22,19 @@ import './App.css';
 import './media.css';
 
 export const AppContext = createContext();
+
+// Создаем клиент с настройками
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000, // 5 минут данные считаются свежими
+      gcTime: 10 * 60 * 1000, // 10 минут данные хранятся в кэше (было cacheTime)
+      refetchOnWindowFocus: false, // Не перезапрашивать при фокусе окна
+      refetchOnReconnect: false, // Не перезапрашивать при восстановлении сети
+      retry: 1, // Количество попыток при ошибке
+    },
+  },
+});
 
 const getSystemTheme = () => {
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
@@ -64,7 +78,7 @@ function App() {
         setAuthLoading(false);
       }
     }
-    
+
     checkAuth();
   }, []);
 
@@ -141,36 +155,36 @@ function App() {
   }
 
   return (
-    <AppContext.Provider value={{ user, setUser, authLoading, todos, setTodos, allTodos, setAllTodos, users, setUsers, getUserFullName, editMode, setEditMode, selectedTodoId, setSelectedTodoId, todoData, setTodoData, groupTodoList, setGroupTodoList, subordinates, setSubordinates, refetch, setRefetch, theme, setTheme }}>
+    <QueryClientProvider client={queryClient}>
+      <AppContext.Provider value={{ user, setUser, authLoading, todos, setTodos, allTodos, setAllTodos, users, setUsers, getUserFullName, editMode, setEditMode, selectedTodoId, setSelectedTodoId, todoData, setTodoData, groupTodoList, setGroupTodoList, subordinates, setSubordinates, refetch, setRefetch, theme, setTheme }}>
+        <Router>
+          <Routes>
+            <Route path="/" element={<ProtectedRoute><MainPage /></ProtectedRoute>}>
+              <Route index element={<TodoListPage />} />
+              <Route path="archive" element={<ArchivePage />} />
+            </Route>
 
-      <Router>
-        <Routes>
-          <Route path="/" element={<ProtectedRoute><MainPage /></ProtectedRoute>}>
-            <Route index element={<TodoListPage />} />
-            <Route path="archive" element={<ArchivePage />} />
-          </Route>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
 
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
+            <Route path="/admin" element={<ProtectedRoute requiredRole="admin"><AdminPage /></ProtectedRoute>}>
+              <Route path="users" element={<AdminUsers />} />
+              <Route path="users/:id" element={<EditUser />} />
+              <Route path="tasks" element={<AdminTasks />} />
+              <Route path="stat" element={<AdminStat />} />
 
-          <Route path="/admin" element={<ProtectedRoute requiredRole="admin"><AdminPage /></ProtectedRoute>}>
-            <Route path="users" element={<AdminUsers />} />
-            <Route path="users/:id" element={<EditUser />} />
-            <Route path="tasks" element={<AdminTasks />} />
-            <Route path="stat" element={<AdminStat />} />
+              {/* Редирект с /admin на /admin/users */}
+              <Route index element={<Navigate to="users" replace />} />
+            </Route>
 
-            {/* Редирект с /admin на /admin/users */}
-            <Route index element={<Navigate to="users" replace />} />
-          </Route>
+            <Route path="/edit" element={<ProtectedRoute><EditPage /></ProtectedRoute>} />
+            <Route path="/403" element={<ForbiddenPage />} />
 
-          <Route path="/edit" element={<ProtectedRoute><EditPage /></ProtectedRoute>} />
-          <Route path="/403" element={<ForbiddenPage />} />
-
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-      </Router>
-
-    </AppContext.Provider>
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </Router>
+      </AppContext.Provider>
+    </QueryClientProvider>
   )
 }
 

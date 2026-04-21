@@ -1,11 +1,13 @@
 @font-face {
     font-family: 'Manrope';
     src: url('./fonts/Manrope-VariableFont_wght.ttf');
+    font-display: swap;
 }
 
 @font-face {
     font-family: 'JetBrains Mono';
     src: url('./fonts/JetBrainsMono-VariableFont_wght.ttf');
+    font-display: swap;
 }
 
 :root {
@@ -1549,4 +1551,12 @@ input:focus+.slider {
 .success-message {
     text-align: center;
     color: var(--low);
+}
+
+/* редактирование профиля */
+.form-edit-profile {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
