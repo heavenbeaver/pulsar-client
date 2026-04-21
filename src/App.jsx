@@ -1,6 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { createContext, useCallback, useEffect, useState } from "react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import Loader from "./components/Loader";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -22,19 +21,6 @@ import './App.css';
 import './media.css';
 
 export const AppContext = createContext();
-
-// Создаем клиент с настройками
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 5 * 60 * 1000, // 5 минут данные считаются свежими
-      gcTime: 10 * 60 * 1000, // 10 минут данные хранятся в кэше (было cacheTime)
-      refetchOnWindowFocus: false, // Не перезапрашивать при фокусе окна
-      refetchOnReconnect: false, // Не перезапрашивать при восстановлении сети
-      retry: 1, // Количество попыток при ошибке
-    },
-  },
-});
 
 const getSystemTheme = () => {
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
@@ -155,7 +141,6 @@ function App() {
   }
 
   return (
-    <QueryClientProvider client={queryClient}>
       <AppContext.Provider value={{ user, setUser, authLoading, todos, setTodos, allTodos, setAllTodos, users, setUsers, getUserFullName, editMode, setEditMode, selectedTodoId, setSelectedTodoId, todoData, setTodoData, groupTodoList, setGroupTodoList, subordinates, setSubordinates, refetch, setRefetch, theme, setTheme }}>
         <Router>
           <Routes>
@@ -184,7 +169,6 @@ function App() {
           </Routes>
         </Router>
       </AppContext.Provider>
-    </QueryClientProvider>
   )
 }
 
