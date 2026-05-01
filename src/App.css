@@ -838,8 +838,8 @@ button {
     color: var(--text-primary);
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    line-clamp: 2;
-    -webkit-line-clamp: 2;
+    line-clamp: 3;
+    -webkit-line-clamp: 3;
     overflow: hidden;
 }
 
@@ -850,8 +850,8 @@ button {
     margin-bottom: 16px;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
     overflow: hidden;
 }
 
@@ -1081,11 +1081,6 @@ body.modal-open {
     gap: 20px;
 }
 
-.todo-form textarea[name="title"] {
-    min-height: fit-content;
-    resize: none;
-}
-
 .todo-form .form-title {
     text-align: center;
 }
@@ -1095,14 +1090,50 @@ body.modal-open {
     border: 1px solid var(--border);
     border-radius: 10px;
     padding: 10px;
-    min-height: 200px;
     width: 100% !important;
+    min-height: 200px;
 }
 
 .todo-form textarea:focus {
     outline: none;
     border: 1px solid var(--low);
 }
+
+.todo-title-view {
+    font-weight: 600;
+}
+.todo-desc-view {
+    color: var(--text-secondary);
+    line-height: 1.5;
+    white-space: pre-wrap;
+}
+
+.todo-date-view {
+    color: var(--text-secondary);
+    font-size: 14px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.todo-date-view span {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.todo-date-view span.expired-todo {
+    color: var(--high);
+}
+
+.todo-priority-view {
+    color: var(--text-secondary);
+    font-size: 14px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+
 
 .title-green {
     color: var(--low) !important;
@@ -1354,6 +1385,7 @@ body.modal-open {
     border-radius: var(--radius-sm);
     border: 1px solid transparent;
 }
+
 .pagination-btn:hover {
     border-color: var(--border);
 }
