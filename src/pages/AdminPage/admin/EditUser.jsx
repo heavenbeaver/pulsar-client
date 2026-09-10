@@ -93,7 +93,7 @@ const EditUser = () => {
         }
 
         try {
-            const res = await fetch(`https://todo-server-jade-ten.vercel.app/users/${id}/change-password`, {
+            const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/users/${id}/change-password`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -104,6 +104,8 @@ const EditUser = () => {
                     newPassword: passwordData.newPassword
                 })
             });
+
+            console.log(import.meta.env.VITE_SERVER_URL);
 
             if (!res.ok) {
                 const errorData = await res.json();
